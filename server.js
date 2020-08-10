@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const { isAuthenticated } = require("./utils/guard.js");
 
 const app = express();
 
@@ -39,14 +40,6 @@ const authRoute = require("./routes/auth");
 app.use("/api/v1/auth", authRoute);
 
 const deliverablesRoute = require("./routes/deliverables");
-app.use("/api/v1/deliverables", checkAuthenticated, deliverablesRoute);
+app.use("/api/v1/deliverables", isAuthenticated, deliverablesRoute);
 
 app.listen(3001);
-
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-
-  return res.status(401).send({ message: "Not authorized" });
-}

@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("../model/User");
+const { isAuthenticated, isNotAuthenticated } = require("../utils/guard.js");
 
 initializePassport(
   passport,
@@ -10,7 +11,7 @@ initializePassport(
   async (_id) => User.findOne({ _id: _id })
 );
 
-router.get("/whoami", checkAuthenticated, (req, res) => {
+router.get("/whoami", isAuthenticated, (req, res) => {
   return res.send({
     _id: req.user._id,
     name: req.user.name,
@@ -18,7 +19,7 @@ router.get("/whoami", checkAuthenticated, (req, res) => {
   });
 });
 
-router.post("/login", checkNotAuthenticated, function (req, res, next) {
+router.post("/login", isNotAuthenticated, function (req, res, next) {
   passport.authenticate("local", function (err, user) {
     if (err) {
       return next(err);
@@ -38,7 +39,7 @@ router.post("/login", checkNotAuthenticated, function (req, res, next) {
   })(req, res, next);
 });
 
-router.post("/register", checkNotAuthenticated, async (req, res) => {
+router.post("/register", isNotAuthenticated, async (req, res) => {
   // Check if this email is already taken
   const userExists = await User.findOne({ email: req.body.email });
   if (userExists) {
@@ -62,7 +63,7 @@ router.post("/register", checkNotAuthenticated, async (req, res) => {
   }
 });
 
-router.delete("/logout", checkAuthenticated, (req, res) => {
+router.delete("/logout", isAuthenticated, (req, res) => {
   try {
     req.logOut();
     return res.status(200).send({ message: "User logged out" });
@@ -70,21 +71,6 @@ router.delete("/logout", checkAuthenticated, (req, res) => {
     return res.status(500).send({ message: "An error has ocurred" });
   }
 });
-
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-
-  return res.status(401).send({ message: "Not authorized" });
-}
-
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.status(500).send({ message: "Already logged in" });
-  }
-  next();
-}
 
 async function initializePassport(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (email, password, done) => {
