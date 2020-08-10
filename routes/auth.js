@@ -10,8 +10,12 @@ initializePassport(
   async (_id) => User.findOne({ _id: _id })
 );
 
-router.get("/", checkAuthenticated, (req, res) => {
-  res.send({ _id: req.user._id, name: req.user.name, email: req.user.email });
+router.get("/whoami", checkAuthenticated, (req, res) => {
+  return res.send({
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  });
 });
 
 router.post("/login", checkNotAuthenticated, function (req, res, next) {
@@ -41,7 +45,7 @@ router.post("/register", checkNotAuthenticated, async (req, res) => {
     return res.status(500).send({ message: "Email taken" });
   }
 
-  // Create new user
+  // Create new user schema
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = new User({
     name: req.body.name,
@@ -52,18 +56,18 @@ router.post("/register", checkNotAuthenticated, async (req, res) => {
   // Save new user
   try {
     const savedUser = await newUser.save();
-    res.status(200).send({ message: "Success", _id: savedUser._id });
+    return res.send({ message: "Success", _id: savedUser._id });
   } catch (error) {
-    response.status(400).json(error);
+    return res.json(error);
   }
 });
 
 router.delete("/logout", checkAuthenticated, (req, res) => {
   try {
     req.logOut();
-    res.status(200).send({ message: "User logged out" });
+    return res.status(200).send({ message: "User logged out" });
   } catch (e) {
-    res.status(500).send({ message: "An error has ocurred" });
+    return res.status(500).send({ message: "An error has ocurred" });
   }
 });
 
@@ -72,7 +76,7 @@ function checkAuthenticated(req, res, next) {
     return next();
   }
 
-  res.status(401).send({ message: "Not authorized" });
+  return res.status(401).send({ message: "Not authorized" });
 }
 
 function checkNotAuthenticated(req, res, next) {
