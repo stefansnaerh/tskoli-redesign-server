@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample front-end app</title>
+
+    <script>
+      async function login() {
+        const login = await fetch("http://localhost:3001/api/v1/auth/login", {
+          method: "POST",
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "",
+            password: "",
+          }),
+        });
+
+        const result = await login.json();
+        console.log(result);
+      }
+
+      async function logout() {
+        const logout = await fetch("http://localhost:3001/api/v1/auth/logout", {
+          method: "DELETE",
+          credentials: 'include',
+        });
+        const result = await logout.json();
+        console.log(result);
+      }
+
+      async function whoami() {
+        const logout = await fetch("http://localhost:3001/api/v1/auth/whoami", {
+          method: "GET",
+          credentials: 'include',
+        });
+        const result = await logout.json();
+        console.log(result);
+      }
+
+      async function addDeliverable(deliverableData) {
+        const deliverable = await fetch("http://localhost:3001/api/v1/deliverables", {
+          method: "POST",
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(deliverableData),
+        });
+
+        const result = await deliverable.json();
+        console.log(result);
+      }
+    </script>
+  </head>
+  <body></body>
+</html>

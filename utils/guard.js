@@ -15,6 +15,7 @@ const isAuthenticated = (req, res, next) => {
 };
 
 const isNotAuthenticated = (req, res, next) => {
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     return res.status(500).send({ message: "Already logged in" });
   }

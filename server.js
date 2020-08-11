@@ -28,12 +28,31 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
+    },
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
-store: new MongoStore({ mongooseConnection: mongoose.connection });
+
+app.use(
+  "*",
+  cors((req, callback) => {
+    callback(null, {
+      origin: process.env.ALLOWED_ORIGIN,
+      allowedHeaders: [
+        "Content-Type",
+        // "Origin",
+        // "X-Requested-With",
+        // "Accept",
+        // "Authorization",
+      ],
+      credentials: true,
+      methods: "GET,PATCH,POST,DELETE",
+    });
+  })
+);
 
 // Routes
 const authRoute = require("./routes/auth");

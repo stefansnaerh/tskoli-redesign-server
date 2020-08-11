@@ -14,6 +14,11 @@ const deliverableSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
+  updatedAt: {
+    type: Date,
+    required: false,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Deliverable", deliverableSchema);

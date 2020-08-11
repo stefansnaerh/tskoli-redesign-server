@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const Deliverable = require("../model/Deliverable");
+const Delivery = require("../model/Delivery");
 const { isAdmin } = require("../utils/guard.js");
 
-// Get all deliverables
+// Get all deliveries
 router.get("/", async (req, res) => {
   try {
-    const allDeliverables = await Deliverable.find({});
-    return res.send(allDeliverables);
+    const allDeliveries = await Delivery.find({});
+    return res.send(allDeliveries);
   } catch (error) {
     return res
       .status(500)
@@ -14,18 +14,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Create a new deliverable
+// Create a new delivery
 router.post("/", isAdmin, async (req, res) => {
-  // Create new deliverable schema
-  const newDeliverable = new Deliverable({
+  // Create new delivery schema
+  const newDelivery = new Delivery({
     name: req.body.name,
     description: req.body.description,
   });
 
-  // Save new deliverable
+  // Save new delivery
   try {
-    const savedDeliverable = await newDeliverable.save();
-    return res.send({ message: "Success", _id: savedDeliverable._id });
+    const savedDelivery = await newDelivery.save();
+    return res.send({ message: "Success", _id: savedDelivery._id });
   } catch (error) {
     return res
       .status(500)
@@ -33,20 +33,20 @@ router.post("/", isAdmin, async (req, res) => {
   }
 });
 
-// Get specific deliverable by _id
+// Get specific delivery by _id
 router.get("/:_id", isAdmin, async (req, res) => {
   try {
-    const deliverable = await Deliverable.findOne({ _id: req.params._id });
-    return res.send(deliverable);
+    const delivery = await Delivery.findOne({ _id: req.params._id });
+    return res.send(delivery);
   } catch (error) {
-    return res.status(404).send({ message: "Deliverable not found" });
+    return res.status(404).send({ message: "Delivery not found" });
   }
 });
 
-// Edit deliverable by id
+// Edit delivery by id
 router.patch("/:_id", isAdmin, async (req, res) => {
   try {
-    const deliverable = await Deliverable.updateOne(
+    const delivery = await Delivery.updateOne(
       {
         _id: req.params._id,
       },
@@ -58,7 +58,7 @@ router.patch("/:_id", isAdmin, async (req, res) => {
       }
     );
 
-    return res.send(deliverable);
+    return res.send(delivery);
   } catch (error) {
     return res
       .status(500)
@@ -66,10 +66,10 @@ router.patch("/:_id", isAdmin, async (req, res) => {
   }
 });
 
-// Remove deliverable by id
+// Remove delivery by id
 router.delete("/:_id", isAdmin, async (req, res) => {
   try {
-    const removed = await Deliverable.deleteOne({ _id: req.params._id });
+    const removed = await Delivery.deleteOne({ _id: req.params._id });
 
     if (removed.deletedCount === 0) {
       return res.status(500).send({ message: "Nothing to delete" });

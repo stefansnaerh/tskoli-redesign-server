@@ -59,7 +59,9 @@ router.post("/register", isNotAuthenticated, async (req, res) => {
     const savedUser = await newUser.save();
     return res.send({ message: "Success", _id: savedUser._id });
   } catch (error) {
-    return res.json(error);
+    return res
+      .status(500)
+      .send({ message: "An error has occurred", error: error });
   }
 });
 
@@ -67,8 +69,10 @@ router.delete("/logout", isAuthenticated, (req, res) => {
   try {
     req.logOut();
     return res.status(200).send({ message: "User logged out" });
-  } catch (e) {
-    return res.status(500).send({ message: "An error has ocurred" });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "An error has ocurred", error: error });
   }
 });
 
@@ -86,8 +90,8 @@ async function initializePassport(passport, getUserByEmail, getUserById) {
       } else {
         return done(null, false, { message: "Password incorrect" });
       }
-    } catch (e) {
-      return done(e);
+    } catch (error) {
+      return done(error);
     }
   };
 
