@@ -3,16 +3,19 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const express = require("express");
+const session = require("express-session");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const initializePassport = require("./utils/initializePassport");
 const { isAuthenticated } = require("./utils/guard.js");
+
+initializePassport();
 
 const app = express();
 
-// Connect to db
+// Connect to database
 mongoose.set("useCreateIndex", true);
 mongoose.connect(process.env.MONGODB_CONNECTION, {
   useNewUrlParser: true,
@@ -36,11 +39,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// CORS setup
 app.use(
   "*",
   cors((req, callback) => {
     callback(null, {
-      origin: process.env.ALLOWED_ORIGIN,
+      origin:
+        process.env.NODE_ENV === "production"
+          ? process.env.ALLOWED_ORIGIN
+          : req.headers.origin,
       allowedHeaders: [
         "Content-Type",
         // "Origin",
@@ -55,10 +62,13 @@ app.use(
 );
 
 // Routes
-const authRoute = require("./routes/auth");
-app.use("/api/v1/auth", authRoute);
+const authRoutes = require("./routes/auth");
+app.use("/api/v1/auth", authRoutes);
 
-const deliverablesRoute = require("./routes/deliverables");
-app.use("/api/v1/deliverables", isAuthenticated, deliverablesRoute);
+const deliverablesRoutes = require("./routes/deliverables");
+app.use("/api/v1/deliverables", isAuthenticated, deliverablesRoutes);
+
+const deliveriesRoutes = require("./routes/deliveries");
+app.use("/api/v1/deliveries", isAuthenticated, deliveriesRoutes);
 
 app.listen(3001);

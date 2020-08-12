@@ -9,6 +9,14 @@ const deliverableSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  project: {
+    type: String,
+    required: true,
+  },
+  guide: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     required: true,

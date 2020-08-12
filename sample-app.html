@@ -6,18 +6,18 @@
     <title>Sample front-end app</title>
 
     <script>
-      const apiUrl = 'http://localhost:3001/api/v1';
+      const apiUrl = "http://localhost:3001/api/v1";
 
       async function login() {
         const login = await fetch(`${apiUrl}/auth/login`, {
           method: "POST",
-          credentials: 'include',
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: "",
-            password: "",
+            email: "pedro@brisa.is",
+            password: "Vai123",
           }),
         });
 
@@ -28,16 +28,16 @@
       async function logout() {
         const logout = await fetch(`${apiUrl}/auth/logout`, {
           method: "DELETE",
-          credentials: 'include',
+          credentials: "include",
         });
         const result = await logout.json();
         console.log(result);
       }
 
-      async function whoami() {
-        const logout = await fetch(`${apiUrl}/auth/whoami`, {
+      async function me() {
+        const logout = await fetch(`${apiUrl}/auth/me`, {
           method: "GET",
-          credentials: 'include',
+          credentials: "include",
         });
         const result = await logout.json();
         console.log(result);
@@ -46,15 +46,35 @@
       async function addDeliverable(deliverableData) {
         const deliverable = await fetch(`${apiUrl}/deliverables`, {
           method: "POST",
-          credentials: 'include',
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(deliverableData),
         });
 
-        const result = await deliverable.json();
-        console.log(result);
+        return await deliverable.json();
+      }
+
+      async function addAllDeliverablesFromStrapi() {
+        // Get all Guides from Strapi
+        const guides = await fetch(
+          "https://tskoli-cms.brisa.is/guides"
+        ).then((r) => r.json());
+
+        // Format results
+        const mappedGuides = guides.map(({ Title, Deliver, project }) => ({
+          name: Deliver.Title,
+          description: Deliver.Description,
+          project: project.Title,
+          guide: Title,
+        }));
+
+        // Add deliverables to Intranet
+        mappedGuides.forEach(async guide => {
+          const newDeliverable = await addDeliverable(guide)
+          console.log(newDeliverable);
+        })
       }
     </script>
   </head>
