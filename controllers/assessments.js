@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Assessment = require("../model/Assessment");
 
 const controller = {};
