@@ -1,4 +1,5 @@
 const Deliverable = require("../model/Deliverable");
+const Delivery = require("../model/Delivery");
 
 const controller = {};
 
@@ -6,7 +7,20 @@ const controller = {};
 controller.getAll = async (req, res) => {
   try {
     const allDeliverables = await Deliverable.find({});
-    return res.send(allDeliverables);
+
+    const enhancedDeliverables = await Promise.all(
+      allDeliverables.map(async (deliverable) => {
+        return {
+          ...deliverable._doc,
+          delivery: await Delivery.findOne({
+            deliverable: deliverable._id,
+            sender: req.user._id,
+          }),
+        };
+      })
+    );
+
+    return res.send(enhancedDeliverables);
   } catch (error) {
     return res
       .status(500)
@@ -34,7 +48,15 @@ controller.create = async (req, res) => {
 controller.get = async (req, res) => {
   try {
     const deliverable = await Deliverable.findOne({ _id: req.params._id });
-    return res.send(deliverable);
+    const enhancedDeliverable = {
+      ...deliverable._doc,
+      delivery: await Delivery.findOne({
+        deliverable: deliverable._id,
+        sender: req.user._id,
+      }),
+    };
+
+    return res.send(enhancedDeliverable);
   } catch (error) {
     return res.status(404).send({ message: "Deliverable not found" });
   }

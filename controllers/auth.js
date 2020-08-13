@@ -35,7 +35,7 @@ controller.login = (req, res, next) => {
     }
 
     if (!user) {
-      return res.status(500).send({ message: "No user found" });
+      return res.status(500).send({ message: "The credentials are invalid" });
     }
 
     req.login(user, function (err) {

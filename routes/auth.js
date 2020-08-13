@@ -1,5 +1,8 @@
 const router = require("express").Router();
-const { isAuthenticated, isNotAuthenticated } = require("../utils/guard.js");
+const {
+  isAuthenticated,
+  isNotAuthenticated,
+} = require("../utils/middleware.js");
 const controller = require("../controllers/auth");
 
 router.post("/login", isNotAuthenticated, controller.login);

@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const controller = require("../controllers/deliverables");
-const { isAdmin } = require("../utils/guard.js");
+const { isAdmin } = require("../utils/middleware.js");
 
 // Get all deliverables
 router.get("/", controller.getAll);
@@ -9,7 +9,7 @@ router.get("/", controller.getAll);
 router.post("/", isAdmin, controller.create);
 
 // Get specific deliverable by _id
-router.get("/:_id", isAdmin, controller.get);
+router.get("/:_id", controller.get);
 
 // Edit deliverable by id
 router.patch("/:_id", isAdmin, controller.edit);

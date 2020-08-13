@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const MongoStore = require("connect-mongo")(session);
 const initializePassport = require("./utils/initializePassport");
-const { isAuthenticated } = require("./utils/guard.js");
+const { isAuthenticated } = require("./utils/middleware.js");
 
 initializePassport();
 
@@ -31,6 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    name: "tskoliDevIntranet",
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
     },

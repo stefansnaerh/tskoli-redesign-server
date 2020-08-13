@@ -17,47 +17,15 @@ controller.getAll = async (req, res) => {
 
 // Create a new delivery
 controller.create = async (req, res) => {
-  // Check if passed deliverable exists
+  // Create new delivery
   try {
-    const deliverableExists = await Deliverable.findOne({
-      _id: req.body.deliverableId,
-    });
-
-    if (!deliverableExists) {
-      throw new Error();
-    }
-  } catch (error) {
-    return res.status(500).send({ message: "Deliverable does not exist" });
-  }
-
-  // Check if a delivery exists for this deliverable and only
-  // allow it to go through if one of the assessments as a
-  // no pass vote
-  try {
-    const delivery = await Delivery.findOne({
+    const newDelivery = await Delivery.create({
+      sender: req.user._id,
       deliverable: req.body.deliverableId,
+      description: req.body.description,
     });
 
-    if (delivery) {
-      throw new Error();
-    }
-  } catch (error) {
-    return res.status(500).send({ message: "Delivery cannot be added" });
-  }
-  return res.sendStatus(200);
-
-  // Create new delivery schema
-  const newDelivery = new Delivery({
-    sender: req.user._id,
-    description: req.body.description,
-    deliverable: req.body.deliverableId,
-    description: req.body.description,
-  });
-
-  // Save new delivery
-  try {
-    const savedDelivery = await newDelivery.save();
-    return res.send({ message: "Success", _id: savedDelivery._id });
+    return res.send({ message: "Success", data: newDelivery });
   } catch (error) {
     return res
       .status(500)
@@ -68,7 +36,10 @@ controller.create = async (req, res) => {
 // Get specific delivery by _id
 controller.get = async (req, res) => {
   try {
-    const delivery = await Delivery.findOne({ _id: req.params._id });
+    const delivery = await Delivery.findOne({
+      _id: req.params._id,
+    }).populate("deliverable");
+
     // TODO Protect delivery?
     return res.send(delivery);
   } catch (error) {
