@@ -1,2 +1,5 @@
 .env*
 node_modules
+
+# PM2 config file
+ecosystem.config.js
