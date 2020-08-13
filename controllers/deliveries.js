@@ -1,5 +1,5 @@
 const Delivery = require("../model/Delivery");
-const Deliverable = require("../model/Deliverable");
+const Assessment = require("../model/Assessment");
 
 const controller = {};
 
@@ -36,8 +36,32 @@ controller.create = async (req, res) => {
 // Get specific delivery by _id
 controller.get = async (req, res) => {
   try {
-    const delivery = await Delivery.findOne({
+    let data;
+
+    data = await Delivery.findOne({
       _id: req.params._id,
+    }).populate("deliverable");
+
+    data = {
+      ...data._doc,
+      assessments: await Assessment.find({
+        delivery: data._id,
+      }),
+    };
+
+    // TODO Protect delivery?
+    return res.send(data);
+  } catch (error) {
+    return res.status(404).send({ message: "Delivery not found" });
+  }
+};
+
+// Get specific delivery by _id for assessment (excludes current user)
+controller.getForDeliverable = async (req, res) => {
+  try {
+    const delivery = await Delivery.find({
+      sender: { $not: { $eq: req.user._id } },
+      deliverable: { _id: req.params.deliverableId },
     }).populate("deliverable");
 
     // TODO Protect delivery?

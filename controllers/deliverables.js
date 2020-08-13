@@ -1,5 +1,6 @@
 const Deliverable = require("../model/Deliverable");
 const Delivery = require("../model/Delivery");
+const Assessment = require("../model/Assessment");
 
 const controller = {};
 
@@ -10,13 +11,38 @@ controller.getAll = async (req, res) => {
 
     const enhancedDeliverables = await Promise.all(
       allDeliverables.map(async (deliverable) => {
-        return {
+        const deliveryByCurrentUser = await Delivery.findOne({
+          deliverable: deliverable._id,
+          sender: req.user._id,
+        });
+
+        let data = {
           ...deliverable._doc,
-          delivery: await Delivery.findOne({
+          deliveryByCurrentUser,
+        };
+
+        if (deliveryByCurrentUser) {
+          data = {
+            ...data,
+            assessmentsByCurrentUser: await Assessment.find({
+              evaluator: req.user._id,
+              deliverable: deliverable._id,
+              // Exclude user's own delivery
+              delivery: { $not: { $eq: deliveryByCurrentUser._id } },
+            }),
+          };
+        }
+
+        data = {
+          ...data,
+          assessmentsByOtherUsers: await Assessment.find({
+            // Exclude user from search
+            evaluator: { $not: { $eq: req.user._id } },
             deliverable: deliverable._id,
-            sender: req.user._id,
           }),
         };
+
+        return data;
       })
     );
 

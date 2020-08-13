@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const assessmentSchema = new mongoose.Schema({
   // Which delivery is being assessed
+  deliverable: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Deliverable",
+    required: true,
+  },
+  // Which delivery is being assessed
   delivery: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Delivery",
