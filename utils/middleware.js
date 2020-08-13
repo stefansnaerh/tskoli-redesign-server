@@ -1,4 +1,8 @@
 const isAdmin = (req, res, next) => {
+  console.log("SESSION", req.session);
+  console.log("USER", req.user);
+  console.log("=================================");
+
   if (req.user.isAdmin) {
     return next();
   }
@@ -7,6 +11,10 @@ const isAdmin = (req, res, next) => {
 };
 
 const isAuthenticated = (req, res, next) => {
+  console.log("SESSION", req.session);
+  console.log("USER", req.user);
+  console.log("=================================");
+
   if (req.isAuthenticated()) {
     return next();
   }
@@ -15,6 +23,10 @@ const isAuthenticated = (req, res, next) => {
 };
 
 const isNotAuthenticated = (req, res, next) => {
+  console.log("SESSION", req.session);
+  console.log("USER", req.user);
+  console.log("=================================");
+
   if (req.isAuthenticated()) {
     return res.status(500).send({ message: "Already logged in" });
   }

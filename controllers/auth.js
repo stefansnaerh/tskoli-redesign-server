@@ -51,7 +51,7 @@ controller.login = (req, res, next) => {
 controller.logout = (req, res) => {
   try {
     req.logout();
-    return res.status(200).send({ message: "The user was logged out" });
+    return res.send({ message: "The user was logged out" });
   } catch (error) {
     return res.status(500).send({ error });
   }

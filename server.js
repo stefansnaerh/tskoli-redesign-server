@@ -3,13 +3,15 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const express = require("express");
-const session = require("express-session");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const cors = require("cors");
+
+const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-const initializePassport = require("./utils/initializePassport");
+
 const { isAuthenticated } = require("./utils/middleware.js");
+const initializePassport = require("./utils/initializePassport");
 
 initializePassport();
 

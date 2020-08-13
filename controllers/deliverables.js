@@ -7,56 +7,50 @@ const controller = {};
 
 // Get all deliverables
 controller.getAll = async (req, res) => {
-  try {
-    const allDeliverables = await Deliverable.find({});
+  // try {
+  const allDeliverables = await Deliverable.find({});
 
-    const enhancedDeliverables = await Promise.all(
-      allDeliverables.map(async (deliverable) => {
-        const deliveryByCurrentUser = await Delivery.findOne({
+  const enhancedDeliverables = await Promise.all(
+    allDeliverables.map(async (deliverable) => {
+      let extraData = {};
+
+      extraData.deliveryByCurrentUser = await Delivery.findOne({
+        deliverable: mongoose.Types.ObjectId(deliverable._id),
+        sender: mongoose.Types.ObjectId(req.user._id),
+      });
+
+      if (extraData.deliveryByCurrentUser) {
+        extraData.assessmentsByCurrentUser = await Assessment.find({
+          evaluator: mongoose.Types.ObjectId(req.user._id),
           deliverable: mongoose.Types.ObjectId(deliverable._id),
-          sender: mongoose.Types.ObjectId(req.user._id),
+          // Exclude user's own delivery
+          delivery: {
+            $not: {
+              $eq: mongoose.Types.ObjectId(extraData.deliveryByCurrentUser._id),
+            },
+          },
         });
+      }
 
-        let data = {
-          ...deliverable._doc,
-          deliveryByCurrentUser,
-        };
+      extraData.assessmentsByOtherUsers = await Assessment.find({
+        // Exclude user from search
+        evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+        deliverable: mongoose.Types.ObjectId(deliverable._id),
+      });
 
-        if (deliveryByCurrentUser) {
-          data = {
-            ...data,
-            assessmentsByCurrentUser: await Assessment.find({
-              evaluator: mongoose.Types.ObjectId(req.user._id),
-              deliverable: mongoose.Types.ObjectId(deliverable._id),
-              // Exclude user's own delivery
-              delivery: {
-                $not: {
-                  $eq: mongoose.Types.ObjectId(deliveryByCurrentUser._id),
-                },
-              },
-            }),
-          };
-        }
+      return {
+        ...deliverable._doc,
+        ...extraData,
+      };
+    })
+  );
 
-        data = {
-          ...data,
-          assessmentsByOtherUsers: await Assessment.find({
-            // Exclude user from search
-            evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
-            deliverable: mongoose.Types.ObjectId(deliverable._id),
-          }),
-        };
-
-        return data;
-      })
-    );
-
-    return res.send(enhancedDeliverables);
-  } catch (error) {
-    return res
-      .status(500)
-      .send({ message: "An error has occurred", error: error });
-  }
+  return res.send(enhancedDeliverables);
+  // } catch (error) {
+  //   return res
+  //     .status(500)
+  //     .send({ message: "An error has occurred", error: error });
+  // }
 };
 
 // Create a new deliverable
