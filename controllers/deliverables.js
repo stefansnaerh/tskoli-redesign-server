@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Deliverable = require("../model/Deliverable");
 const Delivery = require("../model/Delivery");
 const Assessment = require("../model/Assessment");
@@ -12,8 +13,8 @@ controller.getAll = async (req, res) => {
     const enhancedDeliverables = await Promise.all(
       allDeliverables.map(async (deliverable) => {
         const deliveryByCurrentUser = await Delivery.findOne({
-          deliverable: deliverable._id,
-          sender: req.user._id,
+          deliverable: mongoose.Types.ObjectId(deliverable._id),
+          sender: mongoose.Types.ObjectId(req.user._id),
         });
 
         let data = {
@@ -25,10 +26,14 @@ controller.getAll = async (req, res) => {
           data = {
             ...data,
             assessmentsByCurrentUser: await Assessment.find({
-              evaluator: req.user._id,
-              deliverable: deliverable._id,
+              evaluator: mongoose.Types.ObjectId(req.user._id),
+              deliverable: mongoose.Types.ObjectId(deliverable._id),
               // Exclude user's own delivery
-              delivery: { $not: { $eq: deliveryByCurrentUser._id } },
+              delivery: {
+                $not: {
+                  $eq: mongoose.Types.ObjectId(deliveryByCurrentUser._id),
+                },
+              },
             }),
           };
         }
@@ -37,8 +42,8 @@ controller.getAll = async (req, res) => {
           ...data,
           assessmentsByOtherUsers: await Assessment.find({
             // Exclude user from search
-            evaluator: { $not: { $eq: req.user._id } },
-            deliverable: deliverable._id,
+            evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+            deliverable: mongoose.Types.ObjectId(deliverable._id),
           }),
         };
 
@@ -73,12 +78,14 @@ controller.create = async (req, res) => {
 // Get specific deliverable by _id
 controller.get = async (req, res) => {
   try {
-    const deliverable = await Deliverable.findOne({ _id: req.params._id });
+    const deliverable = await Deliverable.findOne({
+      _id: req.params._id,
+    });
     const enhancedDeliverable = {
       ...deliverable._doc,
       delivery: await Delivery.findOne({
-        deliverable: deliverable._id,
-        sender: req.user._id,
+        deliverable: mongoose.Types.ObjectId(deliverable._id),
+        sender: mongoose.Types.ObjectId(req.user._id),
       }),
     };
 

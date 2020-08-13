@@ -5,7 +5,9 @@ const controller = {};
 // Get all deliveries for user
 controller.getAll = async (req, res) => {
   try {
-    const allAssessments = await Assessment.find({ evaluator: req.user._id });
+    const allAssessments = await Assessment.find({
+      evaluator: mongoose.Types.ObjectId(req.user._id),
+    });
     return res.send(allAssessments);
   } catch (error) {
     return res
@@ -19,9 +21,9 @@ controller.create = async (req, res) => {
   // Create new delivery
   try {
     const newAssessment = await Assessment.create({
-      evaluator: req.user._id,
-      deliverable: req.body.deliverableId,
-      delivery: req.body.deliveryId,
+      evaluator: mongoose.Types.ObjectId(req.user._id),
+      deliverable: mongoose.Types.ObjectId(req.body.deliverableId),
+      delivery: mongoose.Types.ObjectId(req.body.deliveryId),
       feedback: req.body.feedback,
       vote: req.body.vote,
     });

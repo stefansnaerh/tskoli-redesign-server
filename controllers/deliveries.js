@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Delivery = require("../model/Delivery");
 const Assessment = require("../model/Assessment");
 
@@ -6,7 +7,9 @@ const controller = {};
 // Get all deliveries for user
 controller.getAll = async (req, res) => {
   try {
-    const allDeliveries = await Delivery.find({ sender: req.user._id });
+    const allDeliveries = await Delivery.find({
+      sender: mongoose.Types.ObjectId(req.user._id),
+    });
     return res.send(allDeliveries);
   } catch (error) {
     return res
@@ -20,8 +23,8 @@ controller.create = async (req, res) => {
   // Create new delivery
   try {
     const newDelivery = await Delivery.create({
-      sender: req.user._id,
-      deliverable: req.body.deliverableId,
+      sender: mongoose.Types.ObjectId(req.user._id),
+      deliverable: mongoose.Types.ObjectId(req.body.deliverableId),
       description: req.body.description,
     });
 
@@ -45,7 +48,7 @@ controller.get = async (req, res) => {
     data = {
       ...data._doc,
       assessments: await Assessment.find({
-        delivery: data._id,
+        delivery: mongoose.Types.ObjectId(data._id),
       }),
     };
 
@@ -60,8 +63,8 @@ controller.get = async (req, res) => {
 controller.getForDeliverable = async (req, res) => {
   try {
     const delivery = await Delivery.find({
-      sender: { $not: { $eq: req.user._id } },
-      deliverable: { _id: req.params.deliverableId },
+      sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+      deliverable: mongoose.Types.ObjectId(req.params.deliverableId),
     }).populate("deliverable");
 
     // TODO Protect delivery?
