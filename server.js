@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
+require("dotenv").config();
 
 const express = require("express");
 const passport = require("passport");
@@ -17,6 +15,10 @@ initializePassport();
 
 const app = express();
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", true);
+}
+
 // Connect to database
 mongoose.set("useCreateIndex", true);
 mongoose.connect(process.env.MONGODB_CONNECTION, {
@@ -27,6 +29,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION, {
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -37,7 +40,8 @@ app.use(
     proxy: process.env.USE_PROXY || true,
     cookie: {
       sameSite: "none",
-      secure: true,
+      domain: "." + process.env.FRONTEND_DOMAIN,
+      secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
     },
   })
@@ -52,7 +56,7 @@ app.use(
     callback(null, {
       origin:
         process.env.NODE_ENV === "production"
-          ? process.env.ALLOWED_ORIGIN
+          ? "https://" + process.env.FRONTEND_DOMAIN
           : req.headers.origin,
       allowedHeaders: [
         "Content-Type",
