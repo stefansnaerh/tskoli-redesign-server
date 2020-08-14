@@ -37,7 +37,9 @@ controller.getAll = async (req, res) => {
             // Exclude user from search
             evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
             deliverable: mongoose.Types.ObjectId(deliverable._id),
-            delivery: mongoose.Types.ObjectId(deliveryByCurrentUser._id),
+            delivery: mongoose.Types.ObjectId(
+              extraData.deliveryByCurrentUser._id
+            ),
           });
         }
 
