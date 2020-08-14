@@ -15,9 +15,9 @@ initializePassport();
 
 const app = express();
 
-if (process.env.NODE_ENV === "production") {
-  app.set("trust proxy", true);
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.set("trust proxy", true);
+// }
 
 // Connect to database
 mongoose.set("useCreateIndex", true);
@@ -37,11 +37,11 @@ app.use(
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     name: "tskoliDevIntranet",
-    proxy: process.env.USE_PROXY || true,
+    // proxy: process.env.USE_PROXY || true,
     cookie: {
-      sameSite: "none",
-      domain: "." + process.env.FRONTEND_DOMAIN,
-      secure: process.env.NODE_ENV === "production",
+      // sameSite: "none",
+      // domain: "." + process.env.FRONTEND_DOMAIN,
+      // secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
     },
   })
@@ -60,10 +60,10 @@ app.use(
           : req.headers.origin,
       allowedHeaders: [
         "Content-Type",
-        "Origin",
-        "X-Requested-With",
-        "Accept",
-        "Authorization",
+        // "Origin",
+        // "X-Requested-With",
+        // "Accept",
+        // "Authorization",
       ],
       credentials: true,
       methods: "GET,PATCH,POST,DELETE",
