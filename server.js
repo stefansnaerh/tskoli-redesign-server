@@ -36,6 +36,8 @@ app.use(
     name: "tskoliDevIntranet",
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
+      sameSite: "none",
+      secure: true,
     },
   })
 );
