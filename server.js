@@ -34,10 +34,11 @@ app.use(
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     name: "tskoliDevIntranet",
+    proxy: process.env.USE_PROXY || true,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
       sameSite: "none",
       secure: true,
+      maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
     },
   })
 );
@@ -55,10 +56,10 @@ app.use(
           : req.headers.origin,
       allowedHeaders: [
         "Content-Type",
-        // "Origin",
-        // "X-Requested-With",
-        // "Accept",
-        // "Authorization",
+        "Origin",
+        "X-Requested-With",
+        "Accept",
+        "Authorization",
       ],
       credentials: true,
       methods: "GET,PATCH,POST,DELETE",
