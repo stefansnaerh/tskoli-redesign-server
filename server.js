@@ -1,4 +1,8 @@
-require("dotenv").config();
+const isProd = process.env.NODE_ENV !== "production";
+
+if (isProd) {
+  require("dotenv").config();
+}
 
 const express = require("express");
 const passport = require("passport");
@@ -15,7 +19,7 @@ initializePassport();
 
 const app = express();
 
-// if (process.env.NODE_ENV === "production") {
+// if (isProd) {
 //   app.set("trust proxy", true);
 // }
 
@@ -37,11 +41,10 @@ app.use(
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     name: "tskoliDevIntranet",
-    // proxy: process.env.USE_PROXY || true,
+    proxy: isProd,
     cookie: {
-      // sameSite: "none",
-      // domain: "." + process.env.FRONTEND_DOMAIN,
-      // secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      secure: isProd,
       maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
     },
   })
@@ -54,10 +57,9 @@ app.use(
   "*",
   cors((req, callback) => {
     callback(null, {
-      origin:
-        process.env.NODE_ENV === "production"
-          ? "https://" + process.env.FRONTEND_DOMAIN
-          : req.headers.origin,
+      origin: isProd
+        ? "https://" + process.env.FRONTEND_DOMAIN
+        : req.headers.origin,
       allowedHeaders: [
         "Content-Type",
         // "Origin",
