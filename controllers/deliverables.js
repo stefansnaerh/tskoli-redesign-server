@@ -32,13 +32,14 @@ controller.getAll = async (req, res) => {
               },
             },
           });
-        }
 
-        extraData.assessmentsByOtherUsers = await Assessment.find({
-          // Exclude user from search
-          evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
-          deliverable: mongoose.Types.ObjectId(deliverable._id),
-        });
+          extraData.assessmentsByOtherUsers = await Assessment.find({
+            // Exclude user from search
+            evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+            deliverable: mongoose.Types.ObjectId(deliverable._id),
+            delivery: mongoose.Types.ObjectId(deliveryByCurrentUser._id),
+          });
+        }
 
         return {
           ...deliverable._doc,
