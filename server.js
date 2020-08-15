@@ -1,6 +1,6 @@
 const isProd = process.env.NODE_ENV === "production";
 
-if (isProd) {
+if (!isProd) {
   require("dotenv").config();
 }
 
@@ -18,10 +18,6 @@ const initializePassport = require("./utils/initializePassport");
 initializePassport();
 
 const app = express();
-
-// if (isProd) {
-//   app.set("trust proxy", true);
-// }
 
 // Connect to database
 mongoose.set("useCreateIndex", true);
