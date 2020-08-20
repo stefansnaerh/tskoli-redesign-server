@@ -82,4 +82,7 @@ app.use("/api/v1/deliveries", isAuthenticated, deliveriesRoutes);
 const assessmentsRoutes = require("./routes/assessments");
 app.use("/api/v1/assessments", isAuthenticated, assessmentsRoutes);
 
+const guidesRoutes = require("./routes/guides");
+app.use("/api/v1/guides", isAuthenticated, guidesRoutes);
+
 app.listen(3001);
