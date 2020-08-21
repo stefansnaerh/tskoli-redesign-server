@@ -62,13 +62,75 @@ controller.get = async (req, res) => {
 // Get specific delivery by _id for assessment (excludes current user)
 controller.getForDeliverable = async (req, res) => {
   try {
-    const delivery = await Delivery.find({
+    const currentUserDeliveries = await Delivery.find({
+      sender: mongoose.Types.ObjectId(req.user._id),
+      deliverable: mongoose.Types.ObjectId(req.params.deliverableId),
+    })
+      .sort({ createdAt: -1 })
+      .populate("deliverable");
+
+    const augmentedCurrentUserDeliveries = await Promise.all(
+      currentUserDeliveries.map(async (delivery) => {
+        const assessments = await Assessment.find({
+          evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+          delivery: mongoose.Types.ObjectId(delivery._id),
+        });
+
+        return {
+          ...delivery._doc,
+          assessments,
+        };
+      })
+    );
+
+    const otherUsersDeliveries = await Delivery.find({
       sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
       deliverable: mongoose.Types.ObjectId(req.params.deliverableId),
-    }).populate("deliverable");
+    })
+      .sort({ createdAt: -1 })
+      .populate("deliverable");
 
-    // TODO Protect delivery?
-    return res.send(delivery);
+    // Get all deliveries made for this assessment which are not made by
+    // the current user, in crescent order of assessment count, which
+    // helps the deliveries with few or no counts bubble up
+    const augmentedOtherUsersDeliveries = (
+      await Promise.all(
+        otherUsersDeliveries.map(async (delivery) => {
+          const assessments = await Assessment.find({
+            delivery: mongoose.Types.ObjectId(delivery._id),
+          });
+
+          return {
+            ...delivery._doc,
+            assessments,
+          };
+        })
+      )
+    )
+      .sort((a, b) =>
+        a.assessments.length > b.assessments.length
+          ? 1
+          : b.assessments.length > a.assessments.length
+          ? -1
+          : 0
+      )
+      .filter((delivery) => {
+        // Remove deliveries that the current user has already evaluated
+        if (
+          delivery.assessments.find(
+            (assessment) => assessment.evaluator === req.user._id
+          )
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+
+    return res.send({
+      currentUserDeliveries: augmentedCurrentUserDeliveries,
+      otherUsersDeliveries: augmentedOtherUsersDeliveries,
+    });
   } catch (error) {
     return res.status(404).send({ message: "Delivery not found" });
   }

@@ -8,26 +8,26 @@ const controller = {};
 // Get all deliverables
 controller.getAll = async (req, res) => {
   try {
-    const allDeliverables = await Deliverable.find({});
+    const allDeliverables = await Deliverable.find();
 
     const enhancedDeliverables = await Promise.all(
       allDeliverables.map(async (deliverable) => {
         let extraData = {};
 
-        extraData.deliveryByCurrentUser = await Delivery.findOne({
+        extraData.latestDeliveryByCurrentUser = await Delivery.findOne({
           deliverable: mongoose.Types.ObjectId(deliverable._id),
           sender: mongoose.Types.ObjectId(req.user._id),
-        });
+        }).sort({ createdAt: -1 });
 
-        if (extraData.deliveryByCurrentUser) {
+        if (extraData.latestDeliveryByCurrentUser) {
           extraData.assessmentsByCurrentUser = await Assessment.find({
             evaluator: mongoose.Types.ObjectId(req.user._id),
             deliverable: mongoose.Types.ObjectId(deliverable._id),
-            // Exclude user's own delivery
+            // Exclude user's own deliveries
             delivery: {
               $not: {
                 $eq: mongoose.Types.ObjectId(
-                  extraData.deliveryByCurrentUser._id
+                  extraData.latestDeliveryByCurrentUser._id
                 ),
               },
             },
@@ -38,7 +38,7 @@ controller.getAll = async (req, res) => {
             evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
             deliverable: mongoose.Types.ObjectId(deliverable._id),
             delivery: mongoose.Types.ObjectId(
-              extraData.deliveryByCurrentUser._id
+              extraData.latestDeliveryByCurrentUser._id
             ),
           });
         }
@@ -80,12 +80,23 @@ controller.get = async (req, res) => {
     const deliverable = await Deliverable.findOne({
       _id: req.params._id,
     });
+
+    let extraData = {};
+
+    extraData.newestDelivery = await Delivery.findOne({
+      deliverable: mongoose.Types.ObjectId(deliverable._id),
+      sender: mongoose.Types.ObjectId(req.user._id),
+    }).sort({ createdAt: -1 });
+
+    if (extraData.newestDelivery) {
+      extraData.newestDeliveryAssessment = await Assessment.findOne({
+        delivery: mongoose.Types.ObjectId(extraData.newestDelivery._id),
+      });
+    }
+
     const enhancedDeliverable = {
       ...deliverable._doc,
-      delivery: await Delivery.findOne({
-        deliverable: mongoose.Types.ObjectId(deliverable._id),
-        sender: mongoose.Types.ObjectId(req.user._id),
-      }),
+      ...extraData,
     };
 
     return res.send(enhancedDeliverable);

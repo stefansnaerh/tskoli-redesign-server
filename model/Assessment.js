@@ -30,8 +30,8 @@ const assessmentSchema = new mongoose.Schema({
     required: true,
   },
   // Quality of this assessment, assign by the receiver of the assessment
-  rating: {
-    type: String,
+  grade: {
+    type: Number,
   },
   createdAt: {
     type: Date,

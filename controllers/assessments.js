@@ -17,9 +17,26 @@ controller.getAll = async (req, res) => {
   }
 };
 
-// Create a new delivery
+// Get specific assessment by _id
+controller.get = async (req, res) => {
+  try {
+    let data;
+
+    data = await Assessment.findOne({
+      _id: req.params._id,
+    })
+      .populate("deliverable")
+      .populate("delivery");
+
+    // TODO Protect delivery?
+    return res.send(data);
+  } catch (error) {
+    return res.status(404).send({ message: "Delivery not found" });
+  }
+};
+
+// Create new assessment
 controller.create = async (req, res) => {
-  // Create new delivery
   try {
     const newAssessment = await Assessment.create({
       evaluator: mongoose.Types.ObjectId(req.user._id),
@@ -30,6 +47,29 @@ controller.create = async (req, res) => {
     });
 
     return res.send({ message: "Success", data: newAssessment });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "An error has occurred", error: error });
+  }
+};
+
+// Edit assessment by id
+controller.edit = async (req, res) => {
+  try {
+    const assessment = await Assessment.updateOne(
+      {
+        _id: req.params._id,
+      },
+      {
+        $set: {
+          ...req.body,
+          updatedAt: Date.now(),
+        },
+      }
+    );
+
+    return res.send({ message: "Success", data: assessment });
   } catch (error) {
     return res
       .status(500)
