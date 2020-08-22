@@ -8,9 +8,14 @@ const deliverySchema = new mongoose.Schema({
     required: true,
   },
   // Description of delivery
-  description: {
+  url: {
     type: String,
     required: true,
+  },
+  // Description of delivery
+  description: {
+    type: String,
+    required: false,
   },
   // Which deliverable describes this delivery
   deliverable: {

@@ -37,11 +37,13 @@ app.use(
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     name: "tskoliDevIntranet",
-    proxy: isProd,
+    ...(isProd && { proxy: true }),
     cookie: {
-      sameSite: "none",
-      secure: isProd,
       maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
+      ...(isProd && {
+        sameSite: "none",
+        secure: true,
+      }),
     },
   })
 );
@@ -69,6 +71,17 @@ app.use(
   })
 );
 
+// app.use(()=>{
+//   console.log({
+//     ...(isProd && {
+//       sameSite: "none",
+//       secure: isProd,
+//     }),
+//     maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
+//   });
+//   rer
+// })
+
 // Routes
 const authRoutes = require("./routes/auth");
 app.use("/api/v1/auth", authRoutes);
@@ -85,4 +98,20 @@ app.use("/api/v1/assessments", isAuthenticated, assessmentsRoutes);
 const guidesRoutes = require("./routes/guides");
 app.use("/api/v1/guides", isAuthenticated, guidesRoutes);
 
-app.listen(3001);
+if (isProd) {
+  app.listen(3001);
+} else {
+  const https = require("https");
+  const fs = require("fs");
+  const httpsServer = https.createServer(
+    {
+      key: fs.readFileSync("./.certificates/localhost-api.key"),
+      cert: fs.readFileSync("./.certificates/localhost-api.crt"),
+    },
+    app
+  );
+
+  httpsServer.listen(3001, () => {
+    console.log("HTTPS Server running on port 3001");
+  });
+}
