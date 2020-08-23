@@ -25,7 +25,8 @@ controller.create = async (req, res) => {
     const newDelivery = await Delivery.create({
       sender: mongoose.Types.ObjectId(req.user._id),
       deliverable: mongoose.Types.ObjectId(req.body.deliverableId),
-      description: req.body.description,
+      url: req.body.url,
+      comment: req.body.comment,
     });
 
     return res.send({ message: "Success", data: newDelivery });
@@ -72,7 +73,6 @@ controller.getForDeliverable = async (req, res) => {
     const augmentedCurrentUserDeliveries = await Promise.all(
       currentUserDeliveries.map(async (delivery) => {
         const assessments = await Assessment.find({
-          evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
           delivery: mongoose.Types.ObjectId(delivery._id),
         });
 
@@ -117,9 +117,11 @@ controller.getForDeliverable = async (req, res) => {
       .filter((delivery) => {
         // Remove deliveries that the current user has already evaluated
         if (
-          delivery.assessments.find(
-            (assessment) => assessment.evaluator === req.user._id
-          )
+          delivery.assessments.find((assessment) => {
+            // Super weird situation where these values have to be
+            // converted into string so this comparison works :O
+            return `${assessment.evaluator}` === `${req.user._id}`;
+          })
         ) {
           return false;
         } else {

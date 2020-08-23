@@ -71,17 +71,6 @@ app.use(
   })
 );
 
-// app.use(()=>{
-//   console.log({
-//     ...(isProd && {
-//       sameSite: "none",
-//       secure: isProd,
-//     }),
-//     maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
-//   });
-//   rer
-// })
-
 // Routes
 const authRoutes = require("./routes/auth");
 app.use("/api/v1/auth", authRoutes);
@@ -98,6 +87,7 @@ app.use("/api/v1/assessments", isAuthenticated, assessmentsRoutes);
 const guidesRoutes = require("./routes/guides");
 app.use("/api/v1/guides", isAuthenticated, guidesRoutes);
 
+// Run server
 if (isProd) {
   app.listen(3001);
 } else {

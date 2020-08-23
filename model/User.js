@@ -17,6 +17,22 @@ const userSchema = new mongoose.Schema({
     required: [true, "Enter a password"],
     minlength: 6,
   },
+  background: {
+    type: String,
+  },
+  careerGoals: {
+    type: String,
+  },
+  interests: {
+    type: String,
+  },
+  favoriteArtist: {
+    type: String,
+  },
+  active: {
+    type: Boolean,
+    default: false,
+  },
   isAdmin: {
     type: Boolean,
     default: false,

@@ -20,6 +20,10 @@ controller.register = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
+      background: req.body.background,
+      careerGoals: req.body.careerGoals,
+      interests: req.body.interests,
+      favoriteArtist: req.body.favoriteArtist,
     });
 
     return res.send({ message: "Success", _id: newUser._id });
@@ -43,7 +47,12 @@ controller.login = (req, res, next) => {
         return next(handleLoginErrors(err));
       }
 
-      return res.send({ _id: req.user._id, name: req.user.name });
+      return res.send({
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        active: req.user.active,
+      });
     });
   })(req, res, next);
 };
@@ -62,6 +71,7 @@ controller.me = (req, res) => {
     _id: req.user._id,
     name: req.user.name,
     email: req.user.email,
+    active: req.user.active,
   });
 };
 

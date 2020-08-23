@@ -12,8 +12,8 @@ const deliverySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Description of delivery
-  description: {
+  // Comment about delivery
+  comment: {
     type: String,
     required: false,
   },
