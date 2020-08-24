@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const deliverableSchema = new mongoose.Schema({
-  name: {
+const assignmentSchema = new mongoose.Schema({
+  title: {
     type: String,
     required: true,
   },
-  description: {
+  deliverable: {
     type: String,
     required: true,
   },
@@ -13,7 +13,7 @@ const deliverableSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  guide: {
+  category: {
     type: String,
     required: true,
   },
@@ -29,4 +29,4 @@ const deliverableSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Deliverable", deliverableSchema);
+module.exports = mongoose.model("Assignment", assignmentSchema);

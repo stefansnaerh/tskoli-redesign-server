@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const controller = require("../controllers/guides");
 
-// Get all assessments
+// Get all reviews
 router.get("/", controller.getAll);
 
 router.get("/:id", controller.get);

@@ -1,26 +1,26 @@
 const mongoose = require("mongoose");
 
-const deliverySchema = new mongoose.Schema({
-  // Person who is submitting the delivery
+const assignmentReturnSchema = new mongoose.Schema({
+  // Person who is submitting the assignmentReturn
   sender: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  // Description of delivery
+  // Description of assignmentReturn
   url: {
     type: String,
     required: true,
   },
-  // Comment about delivery
+  // Comment about assignmentReturn
   comment: {
     type: String,
     required: false,
   },
-  // Which deliverable describes this delivery
-  deliverable: {
+  // Which assignment describes this assignmentReturn
+  assignment: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Deliverable",
+    ref: "Assignment",
     required: true,
   },
   createdAt: {
@@ -35,4 +35,4 @@ const deliverySchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Delivery", deliverySchema);
+module.exports = mongoose.model("AssignmentReturn", assignmentReturnSchema);

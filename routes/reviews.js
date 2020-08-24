@@ -1,16 +1,16 @@
 const router = require("express").Router();
-const controller = require("../controllers/assessments");
+const controller = require("../controllers/reviews");
 
-// Get all assessments
+// Get all reviews
 router.get("/", controller.getAll);
 
-// Get all assessments
+// Get all reviews
 router.get("/:_id", controller.get);
 
-// Create a new assessment
+// Create a new review
 router.post("/", controller.create);
 
-// Edit an assessment
+// Edit an review
 router.patch("/:_id", controller.edit);
 
 module.exports = router;

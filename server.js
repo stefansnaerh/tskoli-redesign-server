@@ -75,14 +75,14 @@ app.use(
 const authRoutes = require("./routes/auth");
 app.use("/api/v1/auth", authRoutes);
 
-const deliverablesRoutes = require("./routes/deliverables");
-app.use("/api/v1/deliverables", isAuthenticated, deliverablesRoutes);
+const assignmentsRoutes = require("./routes/assignments");
+app.use("/api/v1/assignments", isAuthenticated, assignmentsRoutes);
 
-const deliveriesRoutes = require("./routes/deliveries");
-app.use("/api/v1/deliveries", isAuthenticated, deliveriesRoutes);
+const assignmentReturnsRoutes = require("./routes/assignmentReturns");
+app.use("/api/v1/assignmentReturns", isAuthenticated, assignmentReturnsRoutes);
 
-const assessmentsRoutes = require("./routes/assessments");
-app.use("/api/v1/assessments", isAuthenticated, assessmentsRoutes);
+const reviewsRoutes = require("./routes/reviews");
+app.use("/api/v1/reviews", isAuthenticated, reviewsRoutes);
 
 const guidesRoutes = require("./routes/guides");
 app.use("/api/v1/guides", isAuthenticated, guidesRoutes);

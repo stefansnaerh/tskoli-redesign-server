@@ -1,35 +1,35 @@
 const mongoose = require("mongoose");
 
-const assessmentSchema = new mongoose.Schema({
-  // Which delivery is being assessed
-  deliverable: {
+const reviewSchema = new mongoose.Schema({
+  // Which assignmentReturn is being reviewed
+  assignment: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Deliverable",
+    ref: "Assignment",
     required: true,
   },
-  // Which delivery is being assessed
-  delivery: {
+  // Which assignmentReturn is being reviewed
+  assignmentReturn: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Delivery",
+    ref: "AssignmentReturn",
     required: true,
   },
-  // Person who is evaluating the delivery
+  // Person who is evaluating the assignmentReturn
   evaluator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  // Written comment about the delivery
+  // Written comment about the assignmentReturn
   feedback: {
     type: String,
     required: true,
   },
-  // Pass or No Pass for delivery
+  // Pass or No Pass for assignmentReturn
   vote: {
     type: Boolean,
     required: true,
   },
-  // Quality of this assessment, assign by the receiver of the assessment
+  // Quality of this review, assign by the receiver of the review
   grade: {
     type: Number,
   },
@@ -45,4 +45,4 @@ const assessmentSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Assessment", assessmentSchema);
+module.exports = mongoose.model("Review", reviewSchema);
