@@ -72,6 +72,10 @@ app.use(
 );
 
 // Routes
+
+const userRoutes = require("./routes/users");
+app.use("/api/v1/users", userRoutes);
+
 const authRoutes = require("./routes/auth");
 app.use("/api/v1/auth", authRoutes);
 
