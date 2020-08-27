@@ -9,5 +9,8 @@ router.post("/login", isNotAuthenticated, controller.login);
 router.delete("/logout", isAuthenticated, controller.logout);
 router.post("/register", isNotAuthenticated, controller.register);
 router.get("/me", isAuthenticated, controller.me);
+router.patch("/me", isAuthenticated, controller.meEdit);
+router.get("/me/long", isAuthenticated, controller.meLong);
+router.post("/checkPassword", isAuthenticated, controller.checkPassword);
 
 module.exports = router;

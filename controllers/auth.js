@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const User = require("../model/User");
 const { isEmail } = require("validator");
+const { Mongoose } = require("mongoose");
 
 const controller = {};
 
@@ -73,6 +74,55 @@ controller.me = (req, res) => {
     email: req.user.email,
     active: req.user.active,
   });
+};
+
+controller.meLong = async (req, res) => {
+  let user = (await User.findOne({ _id: req.user._id }))._doc;
+  delete user.password;
+  delete user.isAdmin;
+  delete user.staff;
+  delete user.active;
+  return res.send(user);
+};
+
+controller.meEdit = async (req, res) => {
+  let data = req.body;
+
+  if (data.password) {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(data.password, salt);
+    data.password = hashedPassword;
+  }
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { $set: data },
+      { new: true }
+    );
+    return res.send({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      active: updatedUser.active,
+    });
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
+};
+
+controller.checkPassword = async (req, res) => {
+  passport.authenticate("local", function (err, user) {
+    if (err) {
+      return res.sendStatus(500);
+    }
+
+    if (!user) {
+      return res.status(500).send({ message: "The credentials are invalid" });
+    }
+
+    return res.send({ message: "Ok" });
+  })(req, res);
 };
 
 const validateUserFields = async (fields) => {
