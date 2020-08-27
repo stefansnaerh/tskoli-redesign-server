@@ -9,6 +9,7 @@ controller.getAll = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
       background: user.background,
       careerGoals: user.careerGoals,
       interests: user.interests,

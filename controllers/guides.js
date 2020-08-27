@@ -5,7 +5,9 @@ const controller = {};
 // Get all guides
 controller.getAll = async (req, res) => {
   try {
-    const guides = await axios.get(`${process.env.CMS_URL}/guides/short`);
+    const guides = await axios.get(
+      `${process.env.CMS_URL}/guides/short?_sort=createdAt:ASC`
+    );
     return res.send(guides.data);
   } catch (error) {
     return res

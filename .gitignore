@@ -6,3 +6,6 @@ ecosystem.config.js
 
 # Local certificates for SSL
 /.certificates
+
+# Database backups
+/.dumps

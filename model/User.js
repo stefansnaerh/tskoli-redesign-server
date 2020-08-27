@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
   favoriteArtist: {
     type: String,
   },
+  role: {
+    type: String,
+  },
   active: {
     type: Boolean,
     default: false,
