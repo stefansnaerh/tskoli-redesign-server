@@ -76,6 +76,9 @@ app.use(
 const userRoutes = require("./routes/users");
 app.use("/api/v1/users", userRoutes);
 
+const recordingRoutes = require("./routes/recordings");
+app.use("/api/v1/recordings", recordingRoutes);
+
 const authRoutes = require("./routes/auth");
 app.use("/api/v1/auth", authRoutes);
 
