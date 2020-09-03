@@ -94,6 +94,9 @@ app.use("/api/v1/reviews", isAuthenticated, reviewsRoutes);
 const guidesRoutes = require("./routes/guides");
 app.use("/api/v1/guides", isAuthenticated, guidesRoutes);
 
+const pagesRoutes = require("./routes/pages");
+app.use("/api/v1/pages", isAuthenticated, pagesRoutes);
+
 // Run server
 if (isProd) {
   app.listen(3001);
