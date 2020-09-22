@@ -22,16 +22,19 @@ const reviewSchema = new mongoose.Schema({
   // Written comment about the assignmentReturn
   feedback: {
     type: String,
-    required: true,
+    // required: true,
   },
   // Pass or No Pass for assignmentReturn
   vote: {
     type: Boolean,
-    required: true,
+    // required: true,
   },
   // Quality of this review, assign by the receiver of the review
   grade: {
     type: Number,
+  },
+  isPicked: {
+    type: Boolean,
   },
   createdAt: {
     type: Date,

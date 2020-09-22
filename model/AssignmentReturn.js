@@ -23,6 +23,11 @@ const assignmentReturnSchema = new mongoose.Schema({
     ref: "Assignment",
     required: true,
   },
+  // Whether a return is already picked for reviewing
+  isPicked: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     required: true,

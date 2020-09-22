@@ -2,6 +2,7 @@ const axios = require("axios");
 const mongoose = require("mongoose");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
+const getAssignment = require("../utils/getAssignment");
 
 const controller = {};
 
@@ -92,196 +93,59 @@ controller.get = async (req, res) => {
 };
 
 // Get specific assignmentReturn by _id for review (excludes current user)
-/** HOLY MOTHER OF GOD, NEEDS ******URGENT******* REFACTOR PLEASE */
 controller.getForAssignment = async (req, res) => {
-  let guide;
-  let assignment;
   let currentUserAssignmentReturns;
-  let augmentedCurrentUserAssignmentReturns;
   let otherUsersAssignmentReturns;
-  let augmentedOtherUsersAssignmentReturns;
 
-  ///////////////////////////////////////////////////////////////
-  ////// Current User's returns
-  ///////////////////////////////////////////////////////////////
-
+  // Current User's returns
   currentUserAssignmentReturns = await AssignmentReturn.find({
     sender: mongoose.Types.ObjectId(req.user._id),
     assignment: mongoose.Types.ObjectId(req.params.assignmentId),
   }).sort({ createdAt: -1 });
 
-  currentUserAssignmentReturns = await Promise.all(
-    currentUserAssignmentReturns.map(async (assignmentReturn) => {
-      // Bring assignment from Strap (temporary)
-      try {
-        guide = (
-          await axios.get(
-            `${process.env.CMS_URL}/guides/${assignmentReturn.assignment}`
-          )
-        ).data;
-      } catch (error) {
-        return res.status(500).send({
-          message: "Error: Unable to fetch Learning Guide",
-          error: error,
-        });
-      }
-
-      if (!guide) {
-        return res
-          .status(404)
-          .send({ message: "Error: Learning Guide not found" });
-      }
-
-      try {
-        // Format Guides into Assignments
-        assignment = {
-          _id: guide._id,
-          guide: guide.Title,
-          deliverable: guide.Deliver.Title,
-          project: guide.project.Title,
-          category: guide.Category,
-        };
-      } catch (error) {
-        return res.status(500).send({
-          message: "Error: Unable to form assignment",
-          error: error,
-        });
-      }
-
-      return {
-        ...assignmentReturn._doc,
-        assignment,
-      };
-    })
+  // Add assignments (guides) and reviews
+  currentUserAssignmentReturns = await augmentReturns(
+    currentUserAssignmentReturns
   );
 
-  /////////////////
-
-  try {
-    augmentedCurrentUserAssignmentReturns = await Promise.all(
-      currentUserAssignmentReturns.map(async (assignmentReturn) => {
-        const reviews = await Review.find({
-          assignmentReturn: mongoose.Types.ObjectId(assignmentReturn._id),
-        });
-
-        return {
-          ...assignmentReturn,
-          reviews,
-        };
-      })
-    );
-  } catch (error) {
-    return res.status(500).send({
-      message: "Error: Unable to form augmentedCurrentUserAssignmentReturns",
-      error: error,
-    });
-  }
-
-  ///////////////////////////////////////////////////////////////
-  ////// Other users returns
-  ///////////////////////////////////////////////////////////////
-
+  // Other users returns
   otherUsersAssignmentReturns = await AssignmentReturn.find({
     sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
     assignment: mongoose.Types.ObjectId(req.params.assignmentId),
   }).sort({ createdAt: -1 });
 
-  otherUsersAssignmentReturns = await Promise.all(
-    otherUsersAssignmentReturns.map(async (assignmentReturn) => {
-      // Bring assignment from Strap (temporary)
-      try {
-        guide = (
-          await axios.get(
-            `${process.env.CMS_URL}/guides/${assignmentReturn.assignment}`
-          )
-        ).data;
-      } catch (error) {
-        return res.status(500).send({
-          message: "Error: Unable to fetch Learning Guide",
-          error: error,
-        });
-      }
-
-      if (!guide) {
-        return res
-          .status(404)
-          .send({ message: "Error: Learning Guide not found" });
-      }
-
-      try {
-        // Format Guides into Assignments
-        assignment = {
-          _id: guide._id,
-          guide: guide.Title,
-          deliverable: guide.Deliver.Title,
-          project: guide.project.Title,
-          category: guide.Category,
-        };
-      } catch (error) {
-        return res.status(500).send({
-          message: "Error: Unable to form assignment",
-          error: error,
-        });
-      }
-
-      return {
-        ...assignmentReturn._doc,
-        assignment,
-      };
-    })
+  // Add assignments (guides) and reviews
+  otherUsersAssignmentReturns = await augmentReturns(
+    otherUsersAssignmentReturns
   );
 
-  ////////////////
-
-  try {
-    // Get all assignmentReturns made for this review which are not made by
-    // the current user, in crescent order of review count, which
-    // helps the assignmentReturns with few or no counts bubble up
-    augmentedOtherUsersAssignmentReturns = (
-      await Promise.all(
-        otherUsersAssignmentReturns.map(async (assignmentReturn) => {
-          const reviews = await Review.find({
-            assignmentReturn: mongoose.Types.ObjectId(assignmentReturn._id),
-          });
-
-          return {
-            ...assignmentReturn,
-            reviews,
-          };
-        })
-      )
+  // Sort and filter other users assignments
+  otherUsersAssignmentReturns = otherUsersAssignmentReturns
+    .sort((a, b) =>
+      a.reviews.length > b.reviews.length
+        ? 1
+        : b.reviews.length > a.reviews.length
+        ? -1
+        : 0
     )
-      .sort((a, b) =>
-        a.reviews.length > b.reviews.length
-          ? 1
-          : b.reviews.length > a.reviews.length
-          ? -1
-          : 0
-      )
-      .filter((assignmentReturn) => {
-        // Remove assignmentReturns that the current user has already evaluated
-        if (
-          assignmentReturn.reviews.find((review) => {
-            // Super weird situation where these values have to be
-            // converted into string so this comparison works :O
-            return `${review.evaluator}` === `${req.user._id}`;
-          })
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-  } catch (error) {
-    return res.status(500).send({
-      message: "Error: Unable to form augmentedOtherUsersAssignmentReturns",
-      error: error,
+    .filter((assignmentReturn) => {
+      // Remove assignmentReturns that the current user has already evaluated
+      if (
+        assignmentReturn.reviews.find((review) => {
+          // Super weird situation where these values have to be
+          // converted into string so this comparison works :O
+          return `${review.evaluator}` === `${req.user._id}`;
+        })
+      ) {
+        return false;
+      } else {
+        return true;
+      }
     });
-  }
 
   return res.send({
-    currentUserAssignmentReturns: augmentedCurrentUserAssignmentReturns,
-    otherUsersAssignmentReturns: augmentedOtherUsersAssignmentReturns,
+    currentUserAssignmentReturns,
+    otherUsersAssignmentReturns,
   });
 };
 
@@ -307,5 +171,27 @@ controller.edit = async (req, res) => {
       .send({ message: "An error has occurred", error: error });
   }
 };
+
+async function augmentReturns(returns) {
+  return await Promise.all(
+    returns.map(async (assignmentReturn) => {
+      // Add assignment from Strapi
+      const assignment = await getAssignment(assignmentReturn.assignment);
+
+      // Get all assignmentReturns made for this review which are not made by
+      // the current user, in crescent order of review count, which
+      // helps the assignmentReturns with few or no counts bubble up
+      const reviews = await Review.find({
+        assignmentReturn: mongoose.Types.ObjectId(assignmentReturn._id),
+      });
+
+      return {
+        ...assignmentReturn._doc,
+        assignment,
+        reviews,
+      };
+    })
+  );
+}
 
 module.exports = controller;
