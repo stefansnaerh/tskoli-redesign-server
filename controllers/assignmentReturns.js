@@ -183,6 +183,7 @@ async function augmentReturns(returns) {
       // helps the assignmentReturns with few or no counts bubble up
       const reviews = await Review.find({
         assignmentReturn: mongoose.Types.ObjectId(assignmentReturn._id),
+        vote: { $exists: true }, // Only get Reviews where a vote exists
       });
 
       return {
