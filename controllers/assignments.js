@@ -85,6 +85,7 @@ controller.getAll = async (req, res) => {
             assignmentReturn: mongoose.Types.ObjectId(
               extraData.latestAssignmentReturnByCurrentUser._id
             ),
+            vote: { $exists: true }, // Only get Reviews where a vote exists
           });
         } catch (error) {
           return res.status(500).send({
