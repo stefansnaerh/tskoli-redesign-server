@@ -73,6 +73,7 @@ controller.me = (req, res) => {
     name: req.user.name,
     email: req.user.email,
     active: req.user.active,
+    role: req.user.role,
   });
 };
 

@@ -1,6 +1,5 @@
 const axios = require("axios");
 const mongoose = require("mongoose");
-const Assignment = require("../model/Assignment");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
 
