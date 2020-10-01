@@ -33,6 +33,8 @@ const getAssignment = async (assignmentId) => {
       deliverable: guide.Deliver.Title,
       project: guide.project.Title,
       category: guide.Category,
+      skills: guide.Skills ? guide.Skills.map((i) => i.Skill) : [],
+      knowledge: guide.Knowledge ? guide.Knowledge.map((i) => i.Knowledge) : [],
     };
   } catch (error) {
     // TODO Handle error
