@@ -55,28 +55,41 @@ controller.getAll = async (req, res) => {
         });
       }
 
+      // If current users has at a "last" return, find reviews for it
+      if (extraData.latestAssignmentReturnByCurrentUser) {
+        try {
+          extraData.reviewsByOtherUsers = await Review.find({
+            assignment: mongoose.Types.ObjectId(assignment._id),
+            assignmentReturn: mongoose.Types.ObjectId(
+              extraData.latestAssignmentReturnByCurrentUser._id
+            ),
+            vote: { $exists: true }, // Only get Reviews where a vote exists
+          });
+        } catch (error) {
+          return res.status(500).send({
+            message: "Error: Unable to form reviewsByOtherUsers",
+            error: error,
+          });
+        }
+      }
+
+      // Get the reviews
       try {
         extraData.reviewsByCurrentUser = await Review.find({
           evaluator: mongoose.Types.ObjectId(req.user._id),
           assignment: mongoose.Types.ObjectId(assignment._id),
+          // Exclude user's own assignmentReturns
+          // assignmentReturn: {
+          //   $not: {
+          //     $eq: mongoose.Types.ObjectId(
+          //       extraData.latestAssignmentReturnByCurrentUser._id
+          //     ),
+          //   },
+          // },
         });
       } catch (error) {
         return res.status(500).send({
           message: "Error: Unable to form reviewsByCurrentUser",
-          error: error,
-        });
-      }
-
-      try {
-        extraData.reviewsByOtherUsers = await Review.find({
-          // Exclude user from search
-          evaluator: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
-          assignment: mongoose.Types.ObjectId(assignment._id),
-          vote: { $exists: true }, // Only get Reviews where a vote exists
-        });
-      } catch (error) {
-        return res.status(500).send({
-          message: "Error: Unable to form reviewsByOtherUsers",
           error: error,
         });
       }
