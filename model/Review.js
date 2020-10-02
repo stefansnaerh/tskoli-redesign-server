@@ -24,6 +24,10 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
+  // Written comment about the assignmentReturn
+  feedbackAnswer: {
+    type: String,
+  },
   // Pass or No Pass for assignmentReturn
   vote: {
     type: Boolean,
