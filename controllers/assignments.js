@@ -41,6 +41,7 @@ controller.getAll = async (req, res) => {
     allAssignments.map(async (assignment) => {
       let extraData = {};
 
+      // Get the latest Return this user has made for this Assignment
       try {
         extraData.latestAssignmentReturnByCurrentUser = await AssignmentReturn.findOne(
           {
@@ -51,6 +52,24 @@ controller.getAll = async (req, res) => {
       } catch (error) {
         return res.status(500).send({
           message: "Error: Unable to form latestAssignmentReturnByCurrentUser",
+          error: error,
+        });
+      }
+
+      // Get count of Returns for this Assignment (one per user)
+      try {
+        const returns = await AssignmentReturn.aggregate([
+          {
+            $match: { assignment: mongoose.Types.ObjectId(assignment._id) },
+          },
+          { $group: { _id: "$sender" } },
+        ]);
+
+        extraData.uniqueReturns = returns;
+        extraData.uniqueReturnsCount = returns.length;
+      } catch (error) {
+        return res.status(500).send({
+          message: "Error: Unable to form uniqueReturnsCount",
           error: error,
         });
       }
