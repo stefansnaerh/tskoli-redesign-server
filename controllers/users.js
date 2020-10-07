@@ -53,4 +53,36 @@ controller.getProgress = async (req, res) => {
   
 };
 
+controller.getUserProgress = async (req, res) => {
+  const id = req.params.id?req.params.id:req.user._id;
+  const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  const assignmentReturns = await AssignmentReturn.find({sender:id}).populate("sender");
+  const allReviews = await Review.find().populate("evaluator");
+  const userReviews = await Review.find({evaluator: id})
+  //adding assisignments from strapi to the assignmentReturns:
+  const returnsWithGuides = assignmentReturns.map(assignmentReturn=>{
+    const simplifiedReturn = assignmentReturn.toObject();
+    simplifiedReturn.assignment = guides.find(guide=>guide["_id"]===simplifiedReturn.assignment.toString());
+    return simplifiedReturn
+  })
+  returnsWithGuides.sort((a,b)=>{
+    return a.sender.name>b.sender.name?1:-1
+  });
+  
+  //adding rewiews to the returns that have been reviewd:
+  allReviews.map(rawReview=>{
+    const review = rawReview.toObject();
+    const index = returnsWithGuides.findIndex(r=>r["_id"].toString()===review.assignmentReturn.toString())
+    if(index === -1) return rawReview;
+    if(!returnsWithGuides[index].allReviews){
+      returnsWithGuides[index].allReviews = [];
+    }
+    returnsWithGuides[index].allReviews.push(review);
+  })
+  
+  return res.send({returns: returnsWithGuides, reviews: userReviews});
+
+
+};
+
 module.exports = controller;
