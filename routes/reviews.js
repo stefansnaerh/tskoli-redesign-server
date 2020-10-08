@@ -4,6 +4,9 @@ const controller = require("../controllers/reviews");
 // Get all reviews
 router.get("/", controller.getAll);
 
+// Test call
+router.get("/test", controller.test);
+
 // Get all reviews
 router.get("/:_id", controller.get);
 

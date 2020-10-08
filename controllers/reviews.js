@@ -20,6 +20,29 @@ controller.getAll = async (req, res) => {
   }
 };
 
+controller.test = async (req, res) => {
+  try {
+    // const pickedReturns = await AssignmentReturn.find({
+    //   isPicked:true
+    // });
+    const undefinedReturns = await AssignmentReturn.find({
+      isPicked:{$exists:false}
+    });
+    res.send(undefinedReturns);
+    let returnsWithoutReviews = (await Promise.all( undefinedReturns.map(async (r) =>{
+      const review = await Review.findOne({assignmentReturn:mongoose.Types.ObjectId(r._id)})
+      if (!review)
+        return r;
+    }) )).filter(r=>r);
+
+    return res.send(returnsWithoutReviews);
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "An error has occurred", error: error });
+  }
+};
+
 // Get specific review by _id
 controller.get = async (req, res) => {
   let review;
@@ -90,23 +113,26 @@ controller.create = async (req, res) => {
   // being assigned to the same return
   chosenReturn.isPicked = true;
   await chosenReturn.save();
-
+  let newReview;
   try {
-    const newReview = await Review.create({
+    newReview = await Review.create({
       evaluator: mongoose.Types.ObjectId(req.user._id),
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
       assignmentReturn: mongoose.Types.ObjectId(chosenReturn._id),
     });
 
-    return res.send({
-      message: "Success",
-      data: { reviewId: newReview._id },
-    });
+    
   } catch (error) {
+    chosenReturn.isPicked = false;
+    await chosenReturn.save();
     return res
       .status(500)
       .send({ message: "A mysterious error has occurred...", error: error });
   }
+  return res.send({
+    message: "Success",
+    data: { reviewId: newReview._id },
+  });
 };
 
 // Edit review by id

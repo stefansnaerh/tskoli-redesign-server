@@ -37,9 +37,6 @@ const reviewSchema = new mongoose.Schema({
   grade: {
     type: Number,
   },
-  isPicked: {
-    type: Boolean,
-  },
   createdAt: {
     type: Date,
     required: true,
