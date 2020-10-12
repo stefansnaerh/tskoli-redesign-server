@@ -26,14 +26,20 @@ controller.test = async (req, res) => {
     //   isPicked:true
     // });
     const undefinedReturns = await AssignmentReturn.find({
-      isPicked:{$exists:false}
+      isPicked: { $ne: true },
     });
-    res.send(undefinedReturns);
-    let returnsWithoutReviews = (await Promise.all( undefinedReturns.map(async (r) =>{
-      const review = await Review.findOne({assignmentReturn:mongoose.Types.ObjectId(r._id)})
-      if (!review)
-        return r;
-    }) )).filter(r=>r);
+    return res.send(undefinedReturns);
+
+    let returnsWithoutReviews = (
+      await Promise.all(
+        undefinedReturns.map(async (r) => {
+          const review = await Review.findOne({
+            assignmentReturn: mongoose.Types.ObjectId(r._id),
+          });
+          if (!review) return r;
+        })
+      )
+    ).filter((r) => r);
 
     return res.send(returnsWithoutReviews);
   } catch (error) {
@@ -120,8 +126,6 @@ controller.create = async (req, res) => {
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
       assignmentReturn: mongoose.Types.ObjectId(chosenReturn._id),
     });
-
-    
   } catch (error) {
     chosenReturn.isPicked = false;
     await chosenReturn.save();
