@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const {
+  isAdmin,
   isAuthenticated,
   isNotAuthenticated,
 } = require("../utils/middleware.js");
@@ -11,6 +12,7 @@ router.post("/register", isNotAuthenticated, controller.register);
 router.get("/me", isAuthenticated, controller.me);
 router.patch("/me", isAuthenticated, controller.meEdit);
 router.get("/me/long", isAuthenticated, controller.meLong);
+router.post("/su", isAdmin, controller.su);
 router.post("/checkPassword", isAuthenticated, controller.checkPassword);
 
 module.exports = router;

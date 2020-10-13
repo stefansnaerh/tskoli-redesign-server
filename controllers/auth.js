@@ -4,6 +4,19 @@ const User = require("../model/User");
 const { isEmail } = require("validator");
 const { Mongoose } = require("mongoose");
 
+const resUser = (user) => {
+  return {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    active: user.active,
+    role: user.role,
+    // Flag to indicate if this user is being
+    // used as it itself by an admin (su)
+    sued: user.sued,
+  };
+};
+
 const controller = {};
 
 controller.register = async (req, res) => {
@@ -48,12 +61,7 @@ controller.login = (req, res, next) => {
         return next(handleLoginErrors(err));
       }
 
-      return res.send({
-        _id: req.user._id,
-        name: req.user.name,
-        email: req.user.email,
-        active: req.user.active,
-      });
+      return res.send(resUser(req.user));
     });
   })(req, res, next);
 };
@@ -68,13 +76,7 @@ controller.logout = (req, res) => {
 };
 
 controller.me = (req, res) => {
-  return res.send({
-    _id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
-    active: req.user.active,
-    role: req.user.role,
-  });
+  return res.send(resUser(req.user));
 };
 
 controller.meLong = async (req, res) => {
@@ -84,6 +86,15 @@ controller.meLong = async (req, res) => {
   delete user.staff;
   delete user.active;
   return res.send(user);
+};
+
+controller.su = async (req, res) => {
+  try {
+    req.session.su = req.body.suId || null;
+    return res.send({ message: "Ok" });
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 };
 
 controller.meEdit = async (req, res) => {

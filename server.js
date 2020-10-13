@@ -12,7 +12,7 @@ const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
-const { isAuthenticated } = require("./utils/middleware.js");
+const { isAuthenticated, isAdmin } = require("./utils/middleware.js");
 const initializePassport = require("./utils/initializePassport");
 
 initializePassport();
@@ -71,6 +71,32 @@ app.use(
   })
 );
 
+async function adminSu(req, res, next) {
+  if (req.user && req.user.isAdmin && req.session.su) {
+    try {
+      const user = await User.findOne({ _id: req.session.su });
+      if (user) {
+        // Found the su user, act as them from now on ;)
+        user.sued = true; // Flag to indicate this user is sued
+        req.user = user;
+      }
+
+      next();
+      return;
+    } catch {
+      // Issue with findOne
+      next();
+      return;
+    }
+  }
+
+  // Not an admin or not using su
+  next();
+}
+
+// Admin su
+app.use("*", adminSu);
+
 // Routes
 const userRoutes = require("./routes/users");
 app.use("/api/v1/users", userRoutes);
@@ -94,6 +120,8 @@ const guidesRoutes = require("./routes/guides");
 app.use("/api/v1/guides", isAuthenticated, guidesRoutes);
 
 const pagesRoutes = require("./routes/pages");
+const User = require("./model/User.js");
+const { login } = require("./controllers/auth.js");
 app.use("/api/v1/pages", isAuthenticated, pagesRoutes);
 
 // Run server
