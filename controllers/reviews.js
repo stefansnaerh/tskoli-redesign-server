@@ -1,4 +1,3 @@
-const axios = require("axios");
 const mongoose = require("mongoose");
 const Review = require("../model/Review");
 const AssignmentReturn = require("../model/AssignmentReturn");
@@ -90,7 +89,7 @@ controller.create = async (req, res) => {
     sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
     assignment: mongoose.Types.ObjectId(req.body.assignmentId),
     isPicked: { $not: { $eq: true } }, // Backwards compatibility
-  }).sort({ createdAt: -1 });
+  }).sort({ createdAt: 1 });
 
   // In case there are no new returns to review, pick one at random
   // TODO Is randomizing the best option?
