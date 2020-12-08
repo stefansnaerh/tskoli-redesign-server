@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const guidesFullSchema = new mongoose.Schema({
+    // add schema data type
     _id: {
         type: String,
     },
