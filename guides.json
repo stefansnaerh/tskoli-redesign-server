@@ -1,0 +1,422 @@
+[
+   {
+      "_id":"5f15ca8a2446a40ab723d6db",
+      "title":"Getting started - Concepts",
+      "assignment":"Nothing",
+      "project":{
+         "_id":"5f47ec0b6983d377c13c2bd9",
+         "title":"0 - Preparation"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f12e46eb92a3e0782418196",
+      "title":"Getting started - Tooling",
+      "assignment":"Nothing",
+      "project":{
+         "_id":"5f47ec0b6983d377c13c2bd9",
+         "title":"0 - Preparation"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f13205ab279dc27c467ca56",
+      "title":"HTML & CSS - Introduction",
+      "assignment":"One pager",
+      "project":{
+         "_id":"5f135d4bd0342d4a127156e5",
+         "title":"1 - Introductory Course"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1320bcb279dc27c467ca5f",
+      "title":"HTML & CSS - Layouting",
+      "assignment":"Poster",
+      "project":{
+         "_id":"5f135d4bd0342d4a127156e5",
+         "title":"1 - Introductory Course"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1321b0b279dc27c467ca67",
+      "title":"HTML & CSS - Animating & Transforming (4h-6h)",
+      "assignment":"Full-screen landing page",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f13220bb279dc27c467ca6d",
+      "title":"HTML & CSS - Tooling/Sass (6 - 9 h.)",
+      "assignment":"Demos",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f13223eb279dc27c467ca70",
+      "title":"HTML & CSS - Tooling/Bootstrap (12 - 16h.)",
+      "assignment":"Responsive website made with a UI Framework",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f132f9fb279dc27c467caaa",
+      "title":"Javascript Introduction - Fundamentals & Data Types (3 - 4h.)",
+      "assignment":"Usage examples",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133097b279dc27c467cab1",
+      "title":"Javascript Introduction - Conditionals (3 - 4h.)",
+      "assignment":"Exercise solution",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1330c3b279dc27c467cab4",
+      "title":"Javascript Introduction - Loops & Iterators (5 - 7h.)",
+      "assignment":"Exercise solution",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133113b279dc27c467cab7",
+      "title":"Javascript Introduction - Functions (6 - 8h.)",
+      "assignment":"Exercise solution",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133189b279dc27c467caba",
+      "title":"Javascript Introduction - ES6+ (5 - 7h.)",
+      "assignment":"Exercise solution",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1332acb279dc27c467cac8",
+      "title":"Javascript In The Browser - DOM Manipulation & Timing (12 - 16h.)",
+      "assignment":"Interactive single-purpose application",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1332d9b279dc27c467cacb",
+      "title":"Javascript In The Browser - Forms (3 - 4h.)",
+      "assignment":"Form",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133330b279dc27c467cace",
+      "title":"Javascript In The Browser - Common Web APIs (5 - 7h.)",
+      "assignment":"Multi-page Single Entry Website",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133371b279dc27c467cad1",
+      "title":"Javascript - Networking & Internet Basics (5h-7h)",
+      "assignment":"Explanatory material",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133418b279dc27c467cad4",
+      "title":"Javascript - API Consumption (7h-9h)",
+      "assignment":"API-centered application",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133439b279dc27c467cad7",
+      "title":"Javascript - Functional programming (8h-10h)",
+      "assignment":"Demo",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f13346db279dc27c467cada",
+      "title":"Javascript - Modules, Package Managers and Bundlers (4h-6h)",
+      "assignment":"Reusable module",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1334cbb279dc27c467cadd",
+      "title":"Javascript - Internals",
+      "assignment":"Technical Article",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133570b279dc27c467cae0",
+      "title":"Javascript - Testing & Error prevention",
+      "assignment":"Interactive web application",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1335b8b279dc27c467cae5",
+      "title":"Javascript/React (13h-16h)",
+      "assignment":"Interactive React App",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1335f8b279dc27c467cae8",
+      "title":"Javascript/React - SPAs",
+      "assignment":"React app with authentication",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133669b279dc27c467caeb",
+      "title":"Javascript/React - SSR & Performance",
+      "assignment":"Gatsby application",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f13369eb279dc27c467caee",
+      "title":"Javascript Beyond the Browser - Reactive Native",
+      "assignment":"React Native App",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1336b9b279dc27c467caf1",
+      "title":"Javascript Beyond the Browser - Electron",
+      "assignment":"Electron app",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1336d2b279dc27c467caf4",
+      "title":"Back-end - Operating Systems",
+      "assignment":"Technical Article",
+      "project":{
+         "_id":"5f1363cfbd7a1e4cca30d043",
+         "title":"5 - Back-end & Infrastructure"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1336f1b279dc27c467caf7",
+      "title":"Back-end - Linux",
+      "assignment":"Technical Article",
+      "project":{
+         "_id":"5f1363cfbd7a1e4cca30d043",
+         "title":"5 - Back-end & Infrastructure"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133784b279dc27c467cafe",
+      "title":"Back-end - Security",
+      "assignment":"Technical Article",
+      "project":{
+         "_id":"5f1363cfbd7a1e4cca30d043",
+         "title":"5 - Back-end & Infrastructure"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1337a3b279dc27c467cb01",
+      "title":"Back-end - Server-side Javascript",
+      "assignment":"Node application",
+      "project":{
+         "_id":"5f1363cfbd7a1e4cca30d043",
+         "title":"5 - Back-end & Infrastructure"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1338a8b279dc27c467cb10",
+      "title":"Back-end - DevOps",
+      "assignment":"Technical Article",
+      "project":{
+         "_id":"5f1363cfbd7a1e4cca30d043",
+         "title":"5 - Back-end & Infrastructure"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f1338f5b279dc27c467cb16",
+      "title":"Back-end - Python & Flask",
+      "assignment":"Flask API",
+      "project":{
+         "_id":"5f1363cfbd7a1e4cca30d043",
+         "title":"5 - Back-end & Infrastructure"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133919b279dc27c467cb19",
+      "title":"Design Introduction - Design Fundamentals",
+      "assignment":"Technical Article",
+      "project":{
+         "_id":"5f135d4bd0342d4a127156e5",
+         "title":"1 - Introductory Course"
+      },
+      "category":"design"
+   },
+   {
+      "_id":"5f1339b5b279dc27c467cb22",
+      "title":"Design - UI Design (20 - 25h)",
+      "assignment":"Intranet design",
+      "project":{
+         "_id":"5f135da5d0342d4a127156ed",
+         "title":"3 - The fundamentals"
+      },
+      "category":"design"
+   },
+   {
+      "_id":"5f1339e1b279dc27c467cb25",
+      "title":"Design/UX (18-20h)",
+      "assignment":"UX Analysis",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"design"
+   },
+   {
+      "_id":"5f133a08b279dc27c467cb28",
+      "title":"Design/UX - Interaction",
+      "assignment":"Navigable design files (prototype)",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"design"
+   },
+   {
+      "_id":"5f133a2db279dc27c467cb2b",
+      "title":"Design/UX - Testing",
+      "assignment":"Article with research results",
+      "project":{
+         "_id":"5f136359bd7a1e4cca30d03c",
+         "title":"6 - Growing complexity"
+      },
+      "category":"design"
+   },
+   {
+      "_id":"5f133a71b279dc27c467cb31",
+      "title":"Project Management - Agile Methodologies",
+      "assignment":"Documents",
+      "project":{
+         "_id":"5f135d4bd0342d4a127156e5",
+         "title":"1 - Introductory Course"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f133a92b279dc27c467cb34",
+      "title":"Design - Design Sprint (3h-4h)",
+      "assignment":"Coming up",
+      "project":{
+         "_id":"5f1362d3bd7a1e4cca30d035",
+         "title":"4 - Connecting to the World"
+      },
+      "category":"design"
+   },
+   {
+      "_id":"5f135bc2d0342d4a127156df",
+      "title":"Further Exploration - The future of Design",
+      "assignment":"Technical Article",
+      "project":{
+         "_id":"5f13645ebd7a1e4cca30d052",
+         "title":"7 - Exploration"
+      },
+      "category":"design"
+   },
+   {
+      "_id":"5f135bced0342d4a127156e2",
+      "title":"Further Exploration - The future of Development",
+      "assignment":"Report and Demo",
+      "project":{
+         "_id":"5f13645ebd7a1e4cca30d052",
+         "title":"7 - Exploration"
+      },
+      "category":"code"
+   },
+   {
+      "_id":"5f6363ab5537db781793b1f3",
+      "title":"Community participation & Networking report",
+      "assignment":"Report",
+      "project":{
+         "_id":"5f135d8ad0342d4a127156ec",
+         "title":"2 - Community & Networking"
+      },
+      "category":"code"
+   }
+]

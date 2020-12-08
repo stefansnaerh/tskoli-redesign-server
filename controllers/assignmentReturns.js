@@ -2,6 +2,7 @@ const axios = require("axios");
 const mongoose = require("mongoose");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
+const GuidesFull = require("../model/GuidesFull");
 const getAssignment = require("../utils/getAssignment");
 
 const controller = {};
@@ -48,11 +49,14 @@ controller.get = async (req, res) => {
   }).populate("assignment");
 
   try {
-    guide = (
-      await axios.get(
-        `${process.env.CMS_URL}/guides/${assignmentReturn.assignment}`
-      )
-    ).data;
+    //guide = (
+      //await axios.get(
+      //  `${process.env.CMS_URL}/guides/${assignmentReturn.assignment}`
+      //)
+      //).data;
+      //guide = await GuidesFull.findOne({id: assignmentReturn.assignment});
+      guide = await GuidesFull.findOne({_id: assignmentReturn.assignment});
+      
   } catch (error) {
     return res.status(500).send({
       message: "Error: Unable to fetch Learning Guide",

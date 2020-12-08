@@ -1,5 +1,7 @@
 const axios = require("axios");
 const mongoose = require("mongoose");
+const Guides = require("../model/Guides");
+const GuidesFull = require("../model/GuidesFull");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
 
@@ -14,7 +16,10 @@ controller.getAll = async (req, res) => {
 
   // Get Learning Guides
   try {
-    guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+    //guides = (await axios.get(`${process.env.CMS_URL}/guides/short`))
+    //.data;
+    guides = (await Guides.find({}));
+    
   } catch (error) {
     return res.status(500).send({
       message: "Error: Unable to fetch Learning Guides",
@@ -130,8 +135,11 @@ controller.get = async (req, res) => {
 
   // Get Learning Guide
   try {
-    guide = (await axios.get(`${process.env.CMS_URL}/guides/${req.params._id}`))
-      .data;
+    //guide = (await axios.get(`${process.env.CMS_URL}/guides/${req.params._id}`))
+    //.data;
+    //guide = (await GuidesFull.findOne({id: req.params._id}))
+    guide = (await GuidesFull.findOne({_id: req.params._id}))
+    
   } catch (error) {
     return res.status(500).send({
       message: "Error: Unable to fetch Learning Guide",

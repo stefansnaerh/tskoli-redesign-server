@@ -1,5 +1,6 @@
 const User = require("../model/User");
 const Assessment = require("../model/Assignment");
+const Guides = require("../model/Guides");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
 const axios = require("axios");
@@ -24,7 +25,8 @@ controller.getAll = async (req, res) => {
 };
 
 controller.getProgress = async (req, res) => {
-  const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  // const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  const guides = (await Guides.find({}));
   const assignmentReturns = await AssignmentReturn.find().populate("sender");
   const reviews = await Review.find().populate("evaluator");
 
@@ -67,7 +69,8 @@ controller.getProgress = async (req, res) => {
 
 controller.getUserProgress = async (req, res) => {
   const id = req.params.id?req.params.id:req.user._id;
-  const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  //const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  const guides = (await Guides.find({}));
   const assignmentReturns = await AssignmentReturn.find({sender:id}).populate("sender");
   const allReviews = await Review.find().populate("evaluator");
   const userReviews = await Review.find({evaluator: id})

@@ -1,4 +1,6 @@
 const axios = require("axios");
+const Guides = require("../model/Guides");
+const GuidesFull = require("../model/GuidesFull");
 
 const getAssignment = async (assignmentId) => {
   let guide;
@@ -6,8 +8,12 @@ const getAssignment = async (assignmentId) => {
 
   // Bring assignment from Strap (temporary)
   try {
-    guide = (await axios.get(`${process.env.CMS_URL}/guides/${assignmentId}`))
-      .data;
+    //guide = (await axios.get(`${process.env.CMS_URL}/guides/${assignmentId}`))
+    //.data;
+    //guide = await GuidesFull.findOne({id: assignmentId.toString()});
+    guide = await GuidesFull.findOne({_id: assignmentId.toString()});
+     
+    // console.log(typeof assignmentId);
   } catch (error) {
     // TODO Handle error
     // return res.status(500).send({
@@ -17,6 +23,7 @@ const getAssignment = async (assignmentId) => {
     // return;
     throw "Error: Unable to fetch Learning Guide. " + error;
   }
+  
 
   if (!guide) {
     // TODO Handle error

@@ -101,8 +101,8 @@ app.use("*", adminSu);
 const userRoutes = require("./routes/users");
 app.use("/api/v1/users", userRoutes);
 
-const recordingRoutes = require("./routes/recordings");
-app.use("/api/v1/recordings", recordingRoutes);
+//const recordingRoutes = require("./routes/recordings");
+//app.use("/api/v1/recordings", recordingRoutes);
 
 const authRoutes = require("./routes/auth");
 app.use("/api/v1/auth", authRoutes);
@@ -123,6 +123,9 @@ const pagesRoutes = require("./routes/pages");
 const User = require("./model/User.js");
 const { login } = require("./controllers/auth.js");
 app.use("/api/v1/pages", isAuthenticated, pagesRoutes);
+
+ const adminRoutes = require("./routes/admin");
+ app.use("/api/v1/admin", isAdmin, adminRoutes);
 
 // Run server
 if (isProd) {
