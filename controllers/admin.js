@@ -19,7 +19,7 @@ controller.edit = async (req, res) => {
             _id: req.params._id,
           },
           {
-               ...req.body,
+               ...req.body, // spread syntax
               updatedAt: Date.now(),
            
           }
