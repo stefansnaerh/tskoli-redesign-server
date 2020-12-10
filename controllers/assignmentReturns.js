@@ -54,7 +54,6 @@ controller.get = async (req, res) => {
       //  `${process.env.CMS_URL}/guides/${assignmentReturn.assignment}`
       //)
       //).data;
-      //guide = await GuidesFull.findOne({id: assignmentReturn.assignment});
       guide = await GuidesFull.findOne({_id: assignmentReturn.assignment});
       
   } catch (error) {

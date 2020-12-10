@@ -32,12 +32,10 @@ controller.getFull = async (req, res) => {
 
 // Get a specific guide by id
 controller.get = async (req, res) => {
-  try {
-    //const guide = await GuidesFull.findOne({id: req.params._id});
+  try { 
     const guide = await GuidesFull.findById({_id: req.params._id});
+     // console.log(guide);
     
-    // console.log(guide);
-    // console.log(typeof req.params._id);
     return res.send(guide._doc);
   } catch (error) {
     return res

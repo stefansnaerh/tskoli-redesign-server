@@ -11,7 +11,7 @@ const getAssignment = async (assignmentId) => {
     //guide = (await axios.get(`${process.env.CMS_URL}/guides/${assignmentId}`))
     //.data;
     //guide = await GuidesFull.findOne({id: assignmentId.toString()});
-    guide = await GuidesFull.findOne({_id: assignmentId.toString()});
+    guide = await GuidesFull.findOne({_id: assignmentId});
      
     // console.log(typeof assignmentId);
   } catch (error) {

@@ -137,7 +137,6 @@ controller.get = async (req, res) => {
   try {
     //guide = (await axios.get(`${process.env.CMS_URL}/guides/${req.params._id}`))
     //.data;
-    //guide = (await GuidesFull.findOne({id: req.params._id}))
     guide = (await GuidesFull.findOne({_id: req.params._id}))
     
   } catch (error) {
