@@ -8,6 +8,7 @@ const express = require("express");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bodyParser = require('body-parser'); // Wei added
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
@@ -29,6 +30,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION, {
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(bodyParser.json()); // Wei added
 
 app.use(
   session({

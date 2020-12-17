@@ -5,26 +5,43 @@ const GuidesFull = require("../model/GuidesFull");
 
 const controller = {};
 
+
 controller.create = async (req, res) => {
    // Create new guide
+   console.log(req.body);
   try {
     const newGuide = await GuidesFull.create({
-        references: req.body.references,
+        _id: mongoose.Types.ObjectId(),
         Knowledge: req.body.Knowledge, 
         Skills: req.body.Skills, 
-        actionPoints: req.body.actionPoints, 
         Resources: req.body.Resources, 
         Topics: req.body.Topics,   
         Classes: req.body.Classes,       
-        Category: req.body.Category,   
-        UID: req.body.UID,       
+        Category: req.body.Category,        
         Title: req.body.Title, 
         topicsList: req.body.topicsList,
         Deliver: req.body.Deliver,
         project: req.body.project,     
         Description: req.body.Description,
-    });
+        updatedAt: Date.now(),
+    }, (error)=>{
+        console.log(error);
+         });
 
+    /*const newGuide = await Guides.create({
+        _id: mongoose.Types.ObjectId(),
+        category: req.body.category,        
+        title: req.body.Title, 
+        project: req.body.project,     
+        assignment: req.body.assignment,
+        updatedAt: Date.now(),
+    }, (error)=>{
+        console.log(error);
+        
+    });*/
+
+
+    console.log(newGuide);
     return res.send({ message: "Success", data: newGuide });
   } catch (error) {
     return res
@@ -43,10 +60,9 @@ controller.edit = async (req, res) => {
           {
                ...req.body, // spread syntax
               updatedAt: Date.now(),
-           
           }
         );
-    
+        
         return res.send(editGuide);
       } catch (error) {
         return res
@@ -58,12 +74,20 @@ controller.edit = async (req, res) => {
 controller.delete = async (req, res) => {
     
     try {    
-        const deleteGuide = await GuidesFull.deleteOne(
+        const deleteGuide = await Guides.deleteOne(
           {
             _id: req.params._id,
           },
         );
         console.log(deleteGuide);
+
+        const deleteGuideFull = await GuidesFull.deleteOne(
+            {
+              _id: req.params._id,
+            },
+          );
+          console.log(deleteGuideFull);
+        
         res.status(200).json({message: 'Deleted this guide'})
       } catch (error) {
         return res

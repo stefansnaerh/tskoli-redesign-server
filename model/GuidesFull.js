@@ -26,9 +26,9 @@ const guidesFullSchema = new mongoose.Schema({
         type: String,        
     },
 
-    Deliverable: {
+    /*Deliverable: {
         type: String,       
-    },
+    }, */
 
     Knowledge: {
         type: Array,

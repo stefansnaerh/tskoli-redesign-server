@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const controller = require("../controllers/admin");
 
-
 // Create a new guide
 router.post("/", controller.create);
 
