@@ -1,6 +1,5 @@
 const axios = require("axios");
 const Guides = require("../model/Guides");
-const GuidesFull = require("../model/GuidesFull");
 
 const getAssignment = async (assignmentId) => {
   let guide;
@@ -11,7 +10,7 @@ const getAssignment = async (assignmentId) => {
     //guide = (await axios.get(`${process.env.CMS_URL}/guides/${assignmentId}`))
     //.data;
     //guide = await GuidesFull.findOne({id: assignmentId.toString()});
-    guide = await GuidesFull.findOne({_id: assignmentId});
+    guide = await Guides.findOne({_id: assignmentId});
      
     // console.log(typeof assignmentId);
   } catch (error) {
