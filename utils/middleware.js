@@ -1,6 +1,7 @@
 const isAdmin = (req, res, next) => {
   // Check if user is admin or is using "su",
   // i.e. acting as another user
+  console.log(req.user);
   if (req.user.isAdmin || req.session.su) {
     return next();
   }

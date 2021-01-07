@@ -1,5 +1,9 @@
 const router = require("express").Router();
 const controller = require("../controllers/admin");
+const gController = require("../controllers/guides")
+
+// Get all guides if you are admin
+router.get("/guides", gController.getAll)
 
 // Create a new guide
 router.post("/", controller.create);
