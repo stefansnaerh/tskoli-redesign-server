@@ -65,6 +65,10 @@ project:{
 Classes:{
     type: Array,
 },
+// the order of guides in each module
+order:{
+    type: Number,
+}
 
 }); 
 

@@ -9,8 +9,9 @@ controller.create = async (req, res) => {
   // Create new guide
   console.log(req.body);
   try {
+    const newID = mongoose.Types.ObjectId();
     const newGuide = await Guides.create({
-      _id: mongoose.Types.ObjectId(),
+      _id: newID,
       Knowledge: req.body.Knowledge,
       Skills: req.body.Skills,
       Resources: req.body.Resources,
@@ -22,13 +23,14 @@ controller.create = async (req, res) => {
       Deliver: req.body.Deliver,
       project: req.body.project,
       Description: req.body.Description,
+      order: req.body.order,
       updatedAt: Date.now(),
     }, (error) => {
       console.log(error);
     });
 
     console.log(newGuide);
-    return res.send({ message: "Success", data: newGuide });
+    return res.send({ message: "Success", id: newID });// get new created guide's id and send it to the frontend
   } catch (error) {
     return res
       .status(500)
