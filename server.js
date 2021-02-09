@@ -117,7 +117,7 @@ const reviewsRoutes = require("./routes/reviews");
 app.use("/api/v1/reviews", isAuthenticated, reviewsRoutes);
 
 const guidesRoutes = require("./routes/guides");
-app.use("/api/v1/guides", isAuthenticated, guidesRoutes);
+app.use("/api/v1/guides", guidesRoutes);
 
 const pagesRoutes = require("./routes/pages");
 const User = require("./model/User.js");
