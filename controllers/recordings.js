@@ -35,7 +35,7 @@ controller.getAll = async (req, res) => {
           "content-type": "application/json",
           Authorization: "Bearer " + token,
         },
-        params: { from: `${year}-${month}-01`, to: `${year}-${month+1}-01` },
+        params: { from: `${year}-${month}-01`, to: `${isItDecember?year+1:year}-${isItDecember?"01":parseInt(month)+1}-01` },
       }
     );
 
