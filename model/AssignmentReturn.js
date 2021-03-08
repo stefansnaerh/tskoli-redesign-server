@@ -7,6 +7,12 @@ const assignmentReturnSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  coAuthors: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   // Description of assignmentReturn
   url: {
     type: String,
