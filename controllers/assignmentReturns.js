@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("../utils/cachedAxios");
 const mongoose = require("mongoose");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");

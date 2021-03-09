@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("../utils/cachedAxios");
 const jwt = require("jsonwebtoken");
 
 const controller = {};

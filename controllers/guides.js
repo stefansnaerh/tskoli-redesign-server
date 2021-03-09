@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("../utils/cachedAxios");
 
 const controller = {};
 
@@ -6,7 +6,8 @@ const controller = {};
 controller.getAll = async (req, res) => {
   try {
     const guides = await axios.get(
-      `${process.env.CMS_URL}/guides/short?_sort=createdAt:ASC`
+      `${process.env.CMS_URL}/guides/short?_sort=createdAt:ASC`,
+      { useCache: true }
     );
     return res.send(guides.data);
   } catch (error) {

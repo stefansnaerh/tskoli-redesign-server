@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("../utils/cachedAxios");
 const mongoose = require("mongoose");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
@@ -14,7 +14,9 @@ controller.getAll = async (req, res) => {
 
   // Get Learning Guides
   try {
-    guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+    guides = (
+      await axios.get(`${process.env.CMS_URL}/guides/short`, { useCache: true })
+    ).data;
   } catch (error) {
     return res.status(500).send({
       message: "Error: Unable to fetch Learning Guides",

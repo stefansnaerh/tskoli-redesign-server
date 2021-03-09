@@ -1,8 +1,8 @@
+const axios = require("../utils/cachedAxios");
 const User = require("../model/User");
 const Assessment = require("../model/Assignment");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
-const axios = require("axios");
 
 const controller = {};
 
@@ -24,7 +24,9 @@ controller.getAll = async (req, res) => {
 };
 
 controller.getProgress = async (req, res) => {
-  const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  const guides = (
+    await axios.get(`${process.env.CMS_URL}/guides/short`, { useCache: true })
+  ).data;
   const assignmentReturns = await AssignmentReturn.find().populate("sender");
   const reviews = await Review.find().populate("evaluator");
 
@@ -66,35 +68,41 @@ controller.getProgress = async (req, res) => {
 };
 
 controller.getUserProgress = async (req, res) => {
-  const id = req.params.id?req.params.id:req.user._id;
-  const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
-  const assignmentReturns = await AssignmentReturn.find({sender:id}).populate("sender");
+  const id = req.params.id ? req.params.id : req.user._id;
+  const guides = (
+    await axios.get(`${process.env.CMS_URL}/guides/short`, { useCache: true })
+  ).data;
+  const assignmentReturns = await AssignmentReturn.find({
+    sender: id,
+  }).populate("sender");
   const allReviews = await Review.find().populate("evaluator");
-  const userReviews = await Review.find({evaluator: id})
+  const userReviews = await Review.find({ evaluator: id });
   //adding assisignments from strapi to the assignmentReturns:
-  const returnsWithGuides = assignmentReturns.map(assignmentReturn=>{
+  const returnsWithGuides = assignmentReturns.map((assignmentReturn) => {
     const simplifiedReturn = assignmentReturn.toObject();
-    simplifiedReturn.assignment = guides.find(guide=>guide["_id"]===simplifiedReturn.assignment.toString());
-    return simplifiedReturn
-  })
-  returnsWithGuides.sort((a,b)=>{
-    return a.sender.name>b.sender.name?1:-1
+    simplifiedReturn.assignment = guides.find(
+      (guide) => guide["_id"] === simplifiedReturn.assignment.toString()
+    );
+    return simplifiedReturn;
   });
-  
+  returnsWithGuides.sort((a, b) => {
+    return a.sender.name > b.sender.name ? 1 : -1;
+  });
+
   //adding rewiews to the returns that have been reviewd:
-  allReviews.map(rawReview=>{
+  allReviews.map((rawReview) => {
     const review = rawReview.toObject();
-    const index = returnsWithGuides.findIndex(r=>r["_id"].toString()===review.assignmentReturn.toString())
-    if(index === -1) return rawReview;
-    if(!returnsWithGuides[index].allReviews){
+    const index = returnsWithGuides.findIndex(
+      (r) => r["_id"].toString() === review.assignmentReturn.toString()
+    );
+    if (index === -1) return rawReview;
+    if (!returnsWithGuides[index].allReviews) {
       returnsWithGuides[index].allReviews = [];
     }
     returnsWithGuides[index].allReviews.push(review);
-  })
-  
-  return res.send({returns: returnsWithGuides, reviews: userReviews});
+  });
 
-
+  return res.send({ returns: returnsWithGuides, reviews: userReviews });
 };
 
 module.exports = controller;

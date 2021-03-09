@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require("../utils/cachedAxios");
 
 const controller = {};
 
