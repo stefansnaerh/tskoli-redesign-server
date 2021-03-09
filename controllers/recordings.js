@@ -17,16 +17,11 @@ const tskoliToken = jwt.sign(tskoliPayload, process.env.TSKOLI_ZOOM_JWT_SECRET);
 
 // Get all recordings
 controller.getAll = async (req, res) => {
-  const { month } = req.query;
-  const isItDecember = month === "12";
-  let year = new Date().getFullYear();
-
-  if (new Date().getMonth() < 7) {
-    //if it is the spring semester
-    year = month < 7 ? year : year - 1; //check if the month we are looking at is this year
-  } else {
-    year = month < 7 ? year + 1 : year; // so that we are always looking at the same school year
-  }
+  const { month, year } = req.query;
+  const from = new Date(`${year}-${month}-01`);
+  const to = new Date(`${year}-${month}-01`);
+  to.setMonth(to.getMonth() + 1);
+  to.setDate(to.getDate() - 1);
 
   try {
     const smariRes = await axios.get(
@@ -38,10 +33,8 @@ controller.getAll = async (req, res) => {
           Authorization: "Bearer " + token,
         },
         params: {
-          from: `${year}-${month}-01`,
-          to: `${isItDecember ? year + 1 : year}-${
-            isItDecember ? "01" : parseInt(month) + 1
-          }-01`,
+          from: `${from.getFullYear()}-${from.getMonth() + 1}-01`,
+          to: `${to.getFullYear()}-${to.getMonth() + 1}-${to.getDate()}`,
         },
       }
     );
@@ -55,10 +48,8 @@ controller.getAll = async (req, res) => {
           Authorization: "Bearer " + tskoliToken,
         },
         params: {
-          from: `${year}-${month}-01`,
-          to: `${isItDecember ? year + 1 : year}-${
-            isItDecember ? "01" : parseInt(month) + 1
-          }-01`,
+          from: `${from.getFullYear()}-${from.getMonth() + 1}-01`,
+          to: `${to.getFullYear()}-${to.getMonth() + 1}-${to.getDate()}`,
         },
       }
     );
