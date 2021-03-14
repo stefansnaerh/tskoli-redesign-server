@@ -11,6 +11,7 @@ const assignmentSchema = new mongoose.Schema({
   },
   project: {
     type: String,
+    ref: "Guides",
     required: true,
   },
   category: {

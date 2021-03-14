@@ -29,6 +29,9 @@ controller.create = async (req, res) => {
       sender: mongoose.Types.ObjectId(req.user._id),
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
       url: req.body.url,
+      liveVersion: req.body.liveVersion,
+      imageOrGif: req.body.imageOrGif,
+      introduction: req.body.introduction,
       comment: req.body.comment,
     });
 
@@ -83,6 +86,7 @@ controller.get = async (req, res) => {
     });
   }
 
+  //Wei meeting note: could be modified
   const enhancedAssignmentReturn = {
     ...assignmentReturn._doc,
     assignment,

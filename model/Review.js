@@ -30,9 +30,10 @@ const reviewSchema = new mongoose.Schema({
   },
   // Pass or No Pass for assignmentReturn
   vote: {
-    type: Boolean,
+    type: String,
     // required: true,
   },
+  
   // Quality of this review, assign by the receiver of the review
   grade: {
     type: Number,
