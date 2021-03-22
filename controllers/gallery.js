@@ -3,8 +3,6 @@ const Guides = require("../model/Guides");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
 
-const axios = require("axios");
-
 const controller = {};
 
 controller.getAssignments = async (req, res) => {
