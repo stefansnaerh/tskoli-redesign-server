@@ -98,7 +98,7 @@ async function adminSu(req, res, next) {
 // Admin su
 app.use("*", adminSu);
 
-// The Routes
+// Routes
 const userRoutes = require("./routes/users");
 app.use("/api/v1/users", userRoutes);
 
