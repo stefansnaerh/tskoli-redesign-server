@@ -24,6 +24,7 @@ mongoose.set("useCreateIndex", true);
 mongoose.connect(process.env.MONGODB_CONNECTION, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 
 // Middleware
