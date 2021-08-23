@@ -4,13 +4,13 @@ const jwt = require("jsonwebtoken");
 const controller = {};
 
 const payload = {
-  iss: process.env.ZOOM_JWT_API_KEY,
+  iss: process.env.ZOOM_JWT_KEY,
   exp: new Date().getTime() + 5000,
 };
 const token = jwt.sign(payload, process.env.ZOOM_JWT_SECRET);
 
 const tskoliPayload = {
-  iss: process.env.TSKOLI_ZOOM_JWT_API_KEY,
+  iss: process.env.TSKOLI_ZOOM_JWT_KEY,
   exp: new Date().getTime() + 5000,
 };
 const tskoliToken = jwt.sign(tskoliPayload, process.env.TSKOLI_ZOOM_JWT_SECRET);
