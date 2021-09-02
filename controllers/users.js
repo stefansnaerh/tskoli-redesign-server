@@ -68,20 +68,10 @@ controller.getProgress = async (req, res) => {
 };
 
 controller.getUserProgress = async (req, res) => {
-<<<<<<< HEAD
-  const id = req.params.id ? req.params.id : req.user._id;
-  const guides = (
-    await axios.get(`${process.env.CMS_URL}/guides/short`, { useCache: true })
-  ).data;
-  const assignmentReturns = await AssignmentReturn.find({
-    sender: id,
-  }).populate("sender");
-=======
   const id = req.params.id?req.params.id:req.user._id;
   //const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
   const guides = (await Guides.find({}));
   const assignmentReturns = await AssignmentReturn.find({sender:id}).populate("sender");
->>>>>>> c3efe25e36ab58afa901f606d930c1cc451b5061
   const allReviews = await Review.find().populate("evaluator");
   const userReviews = await Review.find({ evaluator: id });
   //adding assisignments from strapi to the assignmentReturns:
