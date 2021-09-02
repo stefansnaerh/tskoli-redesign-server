@@ -110,7 +110,7 @@ controller.create = async (req, res) => {
     if (!chosenReturn) {
       return res
         .status(404)
-        .send({ message: "No return is available available" });
+        .send({ message: "No return is available" });
     }
   }
 

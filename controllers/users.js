@@ -1,6 +1,7 @@
 const axios = require("../utils/cachedAxios");
 const User = require("../model/User");
 const Assessment = require("../model/Assignment");
+const Guides = require("../model/Guides");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
 
@@ -24,9 +25,8 @@ controller.getAll = async (req, res) => {
 };
 
 controller.getProgress = async (req, res) => {
-  const guides = (
-    await axios.get(`${process.env.CMS_URL}/guides/short`, { useCache: true })
-  ).data;
+  // const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  const guides = (await Guides.find({}));
   const assignmentReturns = await AssignmentReturn.find().populate("sender");
   const reviews = await Review.find().populate("evaluator");
 
@@ -68,6 +68,7 @@ controller.getProgress = async (req, res) => {
 };
 
 controller.getUserProgress = async (req, res) => {
+<<<<<<< HEAD
   const id = req.params.id ? req.params.id : req.user._id;
   const guides = (
     await axios.get(`${process.env.CMS_URL}/guides/short`, { useCache: true })
@@ -75,6 +76,12 @@ controller.getUserProgress = async (req, res) => {
   const assignmentReturns = await AssignmentReturn.find({
     sender: id,
   }).populate("sender");
+=======
+  const id = req.params.id?req.params.id:req.user._id;
+  //const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
+  const guides = (await Guides.find({}));
+  const assignmentReturns = await AssignmentReturn.find({sender:id}).populate("sender");
+>>>>>>> c3efe25e36ab58afa901f606d930c1cc451b5061
   const allReviews = await Review.find().populate("evaluator");
   const userReviews = await Review.find({ evaluator: id });
   //adding assisignments from strapi to the assignmentReturns:

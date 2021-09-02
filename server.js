@@ -8,6 +8,7 @@ const express = require("express");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bodyParser = require('body-parser'); // Wei added
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
@@ -30,6 +31,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION, {
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(bodyParser.json()); // Wei added
 
 app.use(
   session({
@@ -102,8 +104,8 @@ app.use("*", adminSu);
 const userRoutes = require("./routes/users");
 app.use("/api/v1/users", userRoutes);
 
-const recordingRoutes = require("./routes/recordings");
-app.use("/api/v1/recordings", recordingRoutes);
+//const recordingRoutes = require("./routes/recordings");
+//app.use("/api/v1/recordings", recordingRoutes);
 
 const authRoutes = require("./routes/auth");
 app.use("/api/v1/auth", authRoutes);
@@ -124,6 +126,12 @@ const pagesRoutes = require("./routes/pages");
 const User = require("./model/User.js");
 const { login } = require("./controllers/auth.js");
 app.use("/api/v1/pages", isAuthenticated, pagesRoutes);
+
+const adminRoutes = require("./routes/admin");
+app.use("/api/v1/admin", isAdmin, adminRoutes);
+
+const galleryRoutes = require("./routes/gallery");
+app.use("/api/v1/gallery", isAuthenticated, galleryRoutes);
 
 // Run server
 if (isProd) {

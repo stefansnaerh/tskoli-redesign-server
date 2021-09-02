@@ -1,5 +1,6 @@
 const axios = require("../utils/cachedAxios");
 const mongoose = require("mongoose");
+const Guides = require("../model/Guides");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
 
@@ -14,9 +15,10 @@ controller.getAll = async (req, res) => {
 
   // Get Learning Guides
   try {
-    guides = (
-      await axios.get(`${process.env.CMS_URL}/guides/short`, { useCache: true })
-    ).data;
+    //guides = (await axios.get(`${process.env.CMS_URL}/guides/short`))
+    //.data;
+    guides = (await Guides.find({}));
+    
   } catch (error) {
     return res.status(500).send({
       message: "Error: Unable to fetch Learning Guides",
@@ -27,11 +29,11 @@ controller.getAll = async (req, res) => {
   // Format Guides into Assignments
   try {
     allAssignments = guides.map((guide) => ({
-      _id: guide._id,
-      guide: guide.title,
-      deliverable: guide.assignment,
-      project: guide.project.title,
-      category: guide.category,
+      _id: guide._id, // here is the assignment belong to which guide
+      guide: guide.Title,
+      deliverable: guide.Assignment,
+      project: guide.project.Title,
+      category: guide.Category,
     }));
   } catch (error) {
     return res
@@ -132,8 +134,10 @@ controller.get = async (req, res) => {
 
   // Get Learning Guide
   try {
-    guide = (await axios.get(`${process.env.CMS_URL}/guides/${req.params._id}`))
-      .data;
+    //guide = (await axios.get(`${process.env.CMS_URL}/guides/${req.params._id}`))
+    //.data;
+    guide = (await Guides.findOne({_id: req.params._id}))
+    
   } catch (error) {
     return res.status(500).send({
       message: "Error: Unable to fetch Learning Guide",

@@ -2,6 +2,7 @@ const axios = require("../utils/cachedAxios");
 const mongoose = require("mongoose");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
+const Guides = require("../model/Guides");
 const getAssignment = require("../utils/getAssignment");
 
 const controller = {};
@@ -28,6 +29,9 @@ controller.create = async (req, res) => {
       sender: mongoose.Types.ObjectId(req.user._id),
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
       url: req.body.url,
+      liveVersion: req.body.liveVersion,
+      imageOrGif: req.body.imageOrGif,
+      introduction: req.body.introduction,
       comment: req.body.comment,
     });
 
@@ -48,11 +52,13 @@ controller.get = async (req, res) => {
   }).populate("assignment");
 
   try {
-    guide = (
-      await axios.get(
-        `${process.env.CMS_URL}/guides/${assignmentReturn.assignment}`
-      )
-    ).data;
+    //guide = (
+      //await axios.get(
+      //  `${process.env.CMS_URL}/guides/${assignmentReturn.assignment}`
+      //)
+      //).data;
+      guide = await Guides.findOne({_id: assignmentReturn.assignment});
+      
   } catch (error) {
     return res.status(500).send({
       message: "Error: Unable to fetch Learning Guide",
@@ -80,6 +86,7 @@ controller.get = async (req, res) => {
     });
   }
 
+  //Wei meeting note: could be modified
   const enhancedAssignmentReturn = {
     ...assignmentReturn._doc,
     assignment,
