@@ -1,4 +1,4 @@
-const Guides = require("../model/Guides");
+const Guides = require("../model/Guide");
 
 const getAssignment = async (assignmentId) => {
   let guide;

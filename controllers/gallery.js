@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Guides = require("../model/Guides");
+const Guides = require("../model/Guide");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");
 

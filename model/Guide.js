@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const guidesSchema = new mongoose.Schema({
+const guideSchema = new mongoose.Schema({
   _id: {
     type: String,
 },
@@ -72,4 +72,4 @@ order:{
 
 }); 
 
-module.exports = mongoose.model("Guides", guidesSchema);
+module.exports = mongoose.model("Guide", guideSchema);

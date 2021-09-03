@@ -1,6 +1,6 @@
 const axios = require("../utils/cachedAxios");
 const mongoose = require("mongoose");
-const Guides = require("../model/Guides");
+const Guides = require("../model/Guide");
 
 const controller = {};
 
@@ -8,7 +8,6 @@ const controller = {};
 controller.getAll = async (req, res) => {
   try {
     const guides = await Guides.find({})
-    
     return res.send(guides);
   } catch (error) {
     return res

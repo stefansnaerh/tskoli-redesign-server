@@ -1,6 +1,6 @@
 const axios = require("axios");
 const mongoose = require("mongoose");
-const Guides = require("../model/Guides");
+const Guides = require("../model/Guide");
 
 const controller = {};
 
