@@ -9,6 +9,7 @@ const controller = {};
 
 controller.getAll = async (req, res) => {
   const users = await User.find();
+  console.log("this is users:", users);
   const strippedUsers = users.map((user) => {
     return {
       _id: user._id,
