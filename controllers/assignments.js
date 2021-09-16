@@ -34,6 +34,7 @@ controller.getAll = async (req, res) => {
       deliverable: guide.Assignment,
       project: guide.project.Title,
       category: guide.Category,
+      order: guide.order,
     }));
   } catch (error) {
     return res
