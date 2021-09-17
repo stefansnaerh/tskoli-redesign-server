@@ -20,7 +20,6 @@ controller.getAll = async (req, res) => {
 controller.get = async (req, res) => {
   try { 
     const guide = await Guides.findById({_id: req.params._id});
-     // console.log(guide);
     
     return res.send(guide._doc);
   } catch (error) {

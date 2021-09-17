@@ -7,7 +7,6 @@ const controller = {};
 
 controller.create = async (req, res) => {
   // Create new guide
-  console.log(req.body);
   try {
     const newID = mongoose.Types.ObjectId();
     const newGuide = await Guides.create({
@@ -29,7 +28,6 @@ controller.create = async (req, res) => {
       console.log(error);
     });
 
-    console.log(newGuide);
     return res.send({ message: "Success", id: newID });// get new created guide's id and send it to the frontend
   } catch (error) {
     return res
@@ -68,7 +66,6 @@ controller.delete = async (req, res) => {
         _id: req.params._id,
       },
     );
-    console.log(deleteGuide);
 
     res.status(200).json({ message: 'Deleted this guide' })
   } catch (error) {
