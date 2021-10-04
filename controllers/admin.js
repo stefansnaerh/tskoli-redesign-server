@@ -1,6 +1,7 @@
 const axios = require("axios");
 const mongoose = require("mongoose");
 const Guides = require("../model/Guide");
+const sanitizeHtml = require("sanitize-html");
 
 const controller = {};
 
@@ -9,6 +10,7 @@ controller.create = async (req, res) => {
   // Create new guide
   try {
     const newID = mongoose.Types.ObjectId();
+    req.body.Deliver.Title = sanitizeHtml(req.body.Deliver.Description);
     const newGuide = await Guides.create({
       _id: newID,
       Knowledge: req.body.Knowledge,
@@ -21,7 +23,7 @@ controller.create = async (req, res) => {
       topicsList: req.body.topicsList,
       Deliver: req.body.Deliver,
       project: req.body.project,
-      Description: req.body.Description,
+      Description: sanitizeHtml(req.body.Description),
       order: req.body.order,
       updatedAt: Date.now(),
     }, (error) => {
@@ -37,6 +39,8 @@ controller.create = async (req, res) => {
 }
 
 controller.edit = async (req, res) => {
+  req.body.Description = sanitizeHtml(req.body.Description);
+  req.body.Deliver.Title = sanitizeHtml(req.body.Deliver.Description);
 
   try {
     const editGuide = await Guides.replaceOne(
