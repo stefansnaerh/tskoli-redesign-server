@@ -69,6 +69,8 @@ controller.create = async (req, res) => {
   let chosenReturn;
   let alreadyReviewedByUser = [];
 
+  // Get all reviews for this assignment
+  
   // Get user's reviews for this assignment
   const userReviews = await Review.find({
     evaluator: mongoose.Types.ObjectId(req.user._id),
@@ -84,40 +86,51 @@ controller.create = async (req, res) => {
   }
 
   // Other users returns
-  chosenReturn = await AssignmentReturn.findOne({
-    _id: { $nin: alreadyReviewedByUser },
-    sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
-    assignment: mongoose.Types.ObjectId(req.body.assignmentId),
-    isPicked: { $not: { $eq: true } }, // Backwards compatibility
-  }).sort({ createdAt: 1 });
+  // chosenReturn = await AssignmentReturn.findOne({
+  //   _id: { $nin: alreadyReviewedByUser },
+  //   sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+  //   assignment: mongoose.Types.ObjectId(req.body.assignmentId),
+  //   isPicked: { $not: { $eq: true } }, // Backwards compatibility
+  // }).sort({ createdAt: 1 });
 
   // In case there are no new returns to review, pick one at random
-  // TODO Is randomizing the best option?
-  if (!chosenReturn) {
+  //console.log("the chosen return is:", chosenReturn);
+  // TODO take out the isPicked property in the assignmentReturns collection and see if it is still needed in the system?
+  //if (!chosenReturn) {
     // Criteria without isPicked
     const criteria = {
       _id: { $nin: alreadyReviewedByUser },
       sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
     };
-    const returnsCount = await AssignmentReturn.count(criteria);
+    const allReviews = await Review.find({assignment: mongoose.Types.ObjectId(req.body.assignmentId)});
+    //const returnsCount = await AssignmentReturn.count(criteria);
     // Get a random entry
-    var random = Math.floor(Math.random() * returnsCount);
+    //var random = Math.floor(Math.random() * returnsCount);
     // Get random return
-    chosenReturn = await AssignmentReturn.findOne(criteria).skip(random);
-
+    reviewableReturns = await AssignmentReturn.find(criteria).sort({ createdAt: 1 });
+    const ammountOfReviews = reviewableReturns.map( ret => {
+      //ammountOfReviews is an array that shows how many reviews exists for each reviewableReturn
+      return allReviews.filter(review=> review.assignmentReturn.toString() === ret._id.toString()).length
+    });
+    const fewestReviews = Math.min(...ammountOfReviews);
+    // chosenReturn is the first instane (oldest) of return with the lowest ammount of reviews:
+    chosenReturn = reviewableReturns.find( (ret,i) => ammountOfReviews[i] === fewestReviews)
+    console.log(ammountOfReviews);
+    console.log(fewestReviews);
+    console.log(chosenReturn);
     // If all the possibilities are exhausted return 404
     if (!chosenReturn) {
       return res
         .status(404)
         .send({ message: "No return is available" });
     }
-  }
+  //}
 
   // Marked as picked to avoid other students
   // being assigned to the same return
-  chosenReturn.isPicked = true;
-  await chosenReturn.save();
+  // chosenReturn.isPicked = true;
+  // await chosenReturn.save();
   let newReview;
   try {
     newReview = await Review.create({
