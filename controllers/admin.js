@@ -1,4 +1,3 @@
-const axios = require("axios");
 const mongoose = require("mongoose");
 const Guides = require("../model/Guide");
 const sanitizeHtml = require("sanitize-html");
@@ -40,7 +39,7 @@ controller.create = async (req, res) => {
 
 controller.edit = async (req, res) => {
   req.body.Description = sanitizeHtml(req.body.Description);
-  req.body.Deliver.Title = sanitizeHtml(req.body.Deliver.Description);
+  req.body.Deliver.Description = sanitizeHtml(req.body.Deliver.Description);
 
   try {
     const editGuide = await Guides.replaceOne(
