@@ -20,12 +20,12 @@ controller.getAll = async (req, res) => {
 controller.get = async (req, res) => {
   try { 
     const guide = await Guides.findById({_id: req.params._id});
-    
+    if(!guide) throw `there is no guide with the id ${req.params._id}`
     return res.send(guide._doc);
   } catch (error) {
     return res
       .status(500)
-      .send({ message: "An error has occurred", error: error });
+      .send({ message: "An error has occurred", error });
       
   }
 };

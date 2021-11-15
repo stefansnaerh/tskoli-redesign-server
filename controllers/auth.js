@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const User = require("../model/User");
 const { isEmail } = require("validator");
-const { Mongoose } = require("mongoose");
 
 const resUser = (user) => {
   return {

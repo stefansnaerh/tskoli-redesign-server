@@ -1,6 +1,4 @@
-const axios = require("../utils/cachedAxios");
 const User = require("../model/User");
-const Assessment = require("../model/Assignment");
 const Guides = require("../model/Guide");
 const AssignmentReturn = require("../model/AssignmentReturn");
 const Review = require("../model/Review");

@@ -9,9 +9,31 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require('body-parser'); // Wei added
-
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info:{
+    title: 'This is the api for dev.tskoli.io',
+    description: 'Here you can see how you are be able manage users, guides, returns and reviews through the API',
+    version: 'v1',
+    contact: {
+      name: 'Smári',
+      email: 'esm@tskoli.is',
+      url:'https://tskoli.is/namsbraut/vefthroun/'
+    }
+  },
+  servers:[{url:"https://localhost:3001"}]
+}
+const options = {
+  swaggerDefinition,
+  apis:['./routes/*.js']
+}
+console.log(__dirname);
+
+const swaggerSpec = swaggerJSDoc(options);
 
 const { isAuthenticated, isAdmin } = require("./utils/middleware.js");
 const initializePassport = require("./utils/initializePassport");
@@ -32,6 +54,8 @@ mongoose.connect(process.env.MONGODB_CONNECTION, {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json()); // Wei added
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 app.use(
   session({
