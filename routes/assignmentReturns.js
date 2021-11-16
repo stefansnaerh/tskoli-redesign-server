@@ -10,7 +10,7 @@ router.post("/", controller.create);
 // Get specific assignmentReturn by _id
 router.get("/:_id", controller.get);
 
-// Get assignmentReturns ready for review (excludes assignmentReturns by current user)
+// Get all assignmentReturns for this assignment and this user
 router.get("/forAssignment/:assignmentId", controller.getForAssignment);
 
 // Edit assignmentReturn by id

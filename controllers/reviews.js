@@ -101,13 +101,12 @@ controller.create = async (req, res) => {
     const criteria = {
       _id: { $nin: alreadyReviewedByUser },
       sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+      $expr:{ $not: {$in: ["$sender","$coAuthors"]}},
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
     };
+    //get all reviews for this asignment
     const allReviews = await Review.find({assignment: mongoose.Types.ObjectId(req.body.assignmentId)});
-    //const returnsCount = await AssignmentReturn.count(criteria);
-    // Get a random entry
-    //var random = Math.floor(Math.random() * returnsCount);
-    // Get random return
+    //get the assignmentReturns specified by the creteria, oldest first
     reviewableReturns = await AssignmentReturn.find(criteria).sort({ createdAt: 1 });
     const ammountOfReviews = reviewableReturns.map( ret => {
       //ammountOfReviews is an array that shows how many reviews exists for each reviewableReturn
