@@ -85,29 +85,19 @@ controller.create = async (req, res) => {
     // ?
   }
 
-  // Other users returns
-  // chosenReturn = await AssignmentReturn.findOne({
-  //   _id: { $nin: alreadyReviewedByUser },
-  //   sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
-  //   assignment: mongoose.Types.ObjectId(req.body.assignmentId),
-  //   isPicked: { $not: { $eq: true } }, // Backwards compatibility
-  // }).sort({ createdAt: 1 });
-
-  // In case there are no new returns to review, pick one at random
-  //console.log("the chosen return is:", chosenReturn);
-  // TODO take out the isPicked property in the assignmentReturns collection and see if it is still needed in the system?
-  //if (!chosenReturn) {
     // Criteria without isPicked
     const criteria = {
       _id: { $nin: alreadyReviewedByUser },
       sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
-      $expr:{ $not: {$in: ["$sender","$coAuthors"]}},
+      $expr:{ $not: {$in: [mongoose.Types.ObjectId(req.user._id),"$coAuthors"]}},
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
     };
     //get all reviews for this asignment
     const allReviews = await Review.find({assignment: mongoose.Types.ObjectId(req.body.assignmentId)});
     //get the assignmentReturns specified by the creteria, oldest first
     reviewableReturns = await AssignmentReturn.find(criteria).sort({ createdAt: 1 });
+    console.log(reviewableReturns);
+    console.log("userid:", req.user._id);
     const ammountOfReviews = reviewableReturns.map( ret => {
       //ammountOfReviews is an array that shows how many reviews exists for each reviewableReturn
       return allReviews.filter(review=> review.assignmentReturn.toString() === ret._id.toString()).length
