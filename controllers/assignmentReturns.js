@@ -27,6 +27,7 @@ controller.create = async (req, res) => {
     const newAssignmentReturn = await AssignmentReturn.create({
       sender: mongoose.Types.ObjectId(req.user._id),
       assignment: mongoose.Types.ObjectId(req.body.assignmentId),
+      coAuthors: JSON.parse(req.body.coAuthors),
       url: req.body.url,
       liveVersion: req.body.liveVersion,
       imageOrGif: req.body.imageOrGif,
