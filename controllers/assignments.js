@@ -50,7 +50,7 @@ controller.getAll = async (req, res) => {
         extraData.latestAssignmentReturnByCurrentUser = await AssignmentReturn.findOne(
           {
             assignment: mongoose.Types.ObjectId(assignment._id),
-            sender: mongoose.Types.ObjectId(req.user._id),
+            $or: [{sender: mongoose.Types.ObjectId(req.user._id)}, {coAuthors:mongoose.Types.ObjectId(req.user._id)}], 
           }
         ).sort({ createdAt: -1 });
       } catch (error) {

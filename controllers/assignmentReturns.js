@@ -106,7 +106,7 @@ controller.getForAssignment = async (req, res) => {
 
   // Current User's returns
   currentUserAssignmentReturns = await AssignmentReturn.find({
-    sender: mongoose.Types.ObjectId(req.user._id),
+    $or: [{sender: mongoose.Types.ObjectId(req.user._id)}, {coAuthors:mongoose.Types.ObjectId(req.user._id)}],
     assignment: mongoose.Types.ObjectId(req.params.assignmentId),
   }).sort({ createdAt: -1 });
 
@@ -115,9 +115,10 @@ controller.getForAssignment = async (req, res) => {
     currentUserAssignmentReturns
   );
 
-  // Other users returns
+  // Other users returns (that you are not coauthoring)
   otherUsersAssignmentReturns = await AssignmentReturn.find({
     sender: { $not: { $eq: mongoose.Types.ObjectId(req.user._id) } },
+    coAuthors : {$ne :mongoose.Types.ObjectId(req.user._id)},
     assignment: mongoose.Types.ObjectId(req.params.assignmentId),
   }).sort({ createdAt: -1 });
 
