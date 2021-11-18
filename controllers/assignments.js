@@ -30,6 +30,7 @@ controller.getAll = async (req, res) => {
     allAssignments = guides.map((guide) => ({
       _id: guide._id, // here is the assignment belong to which guide
       guide: guide.Title,
+      hidden: guide.hidden,
       deliverable: guide.Assignment,
       project: guide.project.Title,
       category: guide.Category,

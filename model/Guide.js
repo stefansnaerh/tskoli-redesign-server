@@ -68,6 +68,10 @@ Classes:{
 // the order of guides in each module
 order:{
     type: Number,
+},
+//should students be able to see the guide?
+hidden:{
+    type: Boolean,
 }
 
 }); 

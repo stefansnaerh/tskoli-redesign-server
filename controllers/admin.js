@@ -24,6 +24,7 @@ controller.create = async (req, res) => {
       project: req.body.project,
       Description: sanitizeHtml(req.body.Description),
       order: req.body.order,
+      hidden: req.body.hidden,
       updatedAt: Date.now(),
     }, (error) => {
       console.log(error);
