@@ -69,6 +69,10 @@ Classes:{
 order:{
     type: Number,
 },
+
+solution:{
+    type: String,
+},
 //should students be able to see the guide?
 hidden:{
     type: Boolean,
