@@ -7,6 +7,6 @@ const controller = require("../controllers/users");
 
 router.get("/", isAuthenticated, controller.getAll);
 router.get("/progress", isAdmin, controller.getProgress);
-router.get("/:id", isAdmin, controller.getUserProgress);
+router.get("/:id", isAuthenticated, controller.getUserProgress);
 
 module.exports = router;
