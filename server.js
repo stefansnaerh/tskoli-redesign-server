@@ -154,7 +154,7 @@ const adminRoutes = require("./routes/admin");
 app.use("/api/v1/admin", isAdmin, adminRoutes);
 
 const galleryRoutes = require("./routes/gallery");
-app.use("/api/v1/gallery", isAuthenticated, galleryRoutes);
+app.use("/api/v1/gallery", galleryRoutes);
 
 // Run server
 if (isProd) {
