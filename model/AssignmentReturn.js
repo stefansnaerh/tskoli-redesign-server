@@ -40,6 +40,10 @@ const assignmentReturnSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  title: {
+    type: String,
+    required: false,
+  },
 
   // Which assignment describes this assignmentReturn
   assignment: {

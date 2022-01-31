@@ -11,7 +11,7 @@ controller.getAssignments = async (req, res) => {
     const assignmentReturns = await AssignmentReturn.find().populate("sender", "name");
     const reviews = await Review.find();
 
-    //adding assisignments from strapi to the assignmentReturns:
+    //adding assisignments to the assignmentReturns:
     const returnsWithGuides = assignmentReturns.map((assignmentReturn) => {
         const simplifiedReturn = assignmentReturn.toObject();
 
