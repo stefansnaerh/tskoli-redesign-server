@@ -76,13 +76,19 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+const frontEnds = ["https://io.tskoli.dev", "https://horsemen.xyz"]
+
 // CORS setup
 app.use(
   "*",
   cors((req, callback) => {
     callback(null, {
       origin: isProd
-        ? "https://" + process.env.FRONTEND_DOMAIN
+        //? "https://" + process.env.FRONTEND_DOMAIN
+          // req.headers.origin if it is in frontEnds
+        ? frontEnds.includes(req.headers.origin)
+          ? req.headers.origin
+          : "https://io.tskoli.dev"
         : req.headers.origin,
       allowedHeaders: [
         "Content-Type",
