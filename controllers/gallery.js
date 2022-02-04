@@ -18,7 +18,7 @@ controller.getAssignments = async (req, res) => {
         const assignment = guides.find(
             (guide) => guide["_id"] === simplifiedReturn.assignment.toString()
         ) || {};
-        const project = { project: assignment.project };
+        const project = { project: assignment.project, title: assignment.Title };
         simplifiedReturn.assignment = project;
         return simplifiedReturn;
     });
