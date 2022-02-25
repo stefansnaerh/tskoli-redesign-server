@@ -69,10 +69,10 @@ controller.getUserProgress = async (req, res) => {
   const id = req.params.id?req.params.id:req.user._id;
   //const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
   const guides = (await Guides.find({}));
-  const assignmentReturns = await AssignmentReturn.find({sender:id}).populate("sender");
+  const assignmentReturns = await AssignmentReturn.find({$or: [{coAuthors:id}, {sender:id}]}).populate("sender");
   const allReviews = await Review.find().populate("evaluator");
   const userReviews = await Review.find({ evaluator: id });
-  //adding assisignments from strapi to the assignmentReturns:
+  //adding assisignments to the assignmentReturns:
   const returnsWithGuides = assignmentReturns.map((assignmentReturn) => {
     const simplifiedReturn = assignmentReturn.toObject();
     simplifiedReturn.assignment = guides.find(
