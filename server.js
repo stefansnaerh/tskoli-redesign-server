@@ -35,7 +35,7 @@ console.log(__dirname);
 
 const swaggerSpec = swaggerJSDoc(options);
 
-const { isAuthenticated, isAdmin } = require("./utils/middleware.js");
+const { isAuthenticated, isAdmin, rateLimit } = require("./utils/middleware.js");
 const initializePassport = require("./utils/initializePassport");
 
 initializePassport();
@@ -137,7 +137,7 @@ const recordingRoutes = require("./routes/recordings");
 app.use("/api/v1/recordings", recordingRoutes);
 
 const authRoutes = require("./routes/auth");
-app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/auth", rateLimit, authRoutes);
 
 const assignmentsRoutes = require("./routes/assignments");
 app.use("/api/v1/assignments", isAuthenticated, assignmentsRoutes);
