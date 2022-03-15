@@ -25,7 +25,7 @@ const isNotAuthenticated = (req, res, next) => {
   next();
 };
 const rateLimit = (req, res, next) => {
-  if (req.user.isAuthenticated()) {
+ /* if (req.isAuthenticated()) {
     return next();
   }
   const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
@@ -48,7 +48,7 @@ const rateLimit = (req, res, next) => {
     req.session[key] = 1;
   }
 
-
+*/
   return next();
 }
 
