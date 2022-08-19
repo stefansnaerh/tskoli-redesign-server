@@ -76,7 +76,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-const frontEnds = ["https://io.tskoli.dev", "https://horsemern.xyz", "https://tskoli-intranet-website-eight.vercel.app"]
+const frontEnds = ["https://io.tskoli.dev", "https://horsemern.xyz", "https://tskoli-intranet-website-eight.vercel.app", "https://tskoli-intranet-website-h7.vercel.app"]
 
 // CORS setup
 app.use(
