@@ -16,3 +16,4 @@ router.post("/su", isAdmin, controller.su);
 router.post("/checkPassword", isAuthenticated, controller.checkPassword);
 
 module.exports = router;
+
