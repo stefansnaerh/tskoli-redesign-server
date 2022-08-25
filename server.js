@@ -76,7 +76,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-const frontEnds = ["https://io.tskoli.dev", "https://horsemern.xyz", "https://tskoli-intranet-website-eight.vercel.app", "https://tskoli-intranet-website-h7.vercel.app"]
+const frontEnds = [
+                    "https://io.tskoli.dev", 
+                    "https://horsemern.xyz", 
+                    "https://tskoli-intranet-website-eight.vercel.app", 
+                    "https://tskoli-intranet-website-h7.vercel.app"
+                  ]
 
 // CORS setup
 app.use(
@@ -88,7 +93,7 @@ app.use(
           // req.headers.origin if it is in frontEnds
         ? frontEnds.includes(req.headers.origin)
           ? req.headers.origin
-          : "https://io.tskoli.dev"
+          : "https://tskoli-intranet-website-eight.vercel.app"
         : req.headers.origin,
       allowedHeaders: [
         "Content-Type",
