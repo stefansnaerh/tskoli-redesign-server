@@ -78,6 +78,7 @@ app.use(passport.session());
 
 const frontEnds = [
                     //"https://io.tskoli.dev", 
+                    "http://localhost:3002",
                     "https://horsemern.xyz", 
                     "https://tskoli-intranet-website-eight.vercel.app", 
                     "https://tskoli-intranet-website-h7.vercel.app"

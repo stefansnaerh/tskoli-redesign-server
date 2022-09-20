@@ -9,3 +9,6 @@ ecosystem.config.js
 
 # Database backups
 /.dumps
+
+# Google credentials
+credentialsS.json

@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const Guides = require("../model/Guide");
 const sanitizeHtml = require("sanitize-html");
+const path = require('path');
+const google = require('@googleapis/forms');
+const {GoogleAuth} = require('google-auth-library');
+const { resolve } = require("path");
+
 
 const controller = {};
 
@@ -79,4 +84,43 @@ controller.delete = async (req, res) => {
       .send({ message: "An error has occurred", error: error });
   }
 }
+
+controller.getForm = async (req, res)=>{
+  const formId = req.params._id;
+  const auth = new GoogleAuth({
+    scopes: [
+      'https://www.googleapis.com/auth/forms.responses.readonly',
+      'https://www.googleapis.com/auth/forms.body.readonly'
+    ]
+  });
+  const forms = google.forms({
+    version: 'v1',
+    auth: auth,
+  });
+  const resp = await forms.forms.responses.list({formId});
+  const form = await forms.forms.get({formId});
+  let questionCategory = "none";
+  const questions = form.data.items.map((question)=>{
+    if(question.textItem) questionCategory=question.title;
+    return{
+      title:question.title,
+      id:question.questionItem?.question.questionId,
+      category:questionCategory
+    }
+  }).filter(q=>q.id)
+  const responses = resp.data.responses.map((response,i)=>{
+    return questions.map(q=>{
+        const o = {...q} //q will always reference the same object pointer
+        try{ //if a question is not required to be answered this will produce an error
+          o.answer = response.answers[q.id].textAnswers.answers[0].value
+        }catch(err){console.log("the problematic question id is:",q.id)}
+        return o;
+      })
+  })
+  return res.status(200).send({responses});
+
+}
+
+
 module.exports = controller;
+

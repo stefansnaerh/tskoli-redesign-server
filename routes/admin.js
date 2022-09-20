@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const controller = require("../controllers/admin");
-const gController = require("../controllers/guides")
+const gController = require("../controllers/guides");
+
+router.get("/form/:_id", controller.getForm);
 
 // Get all guides if you are admin
 router.get("/guides", gController.getAll)
