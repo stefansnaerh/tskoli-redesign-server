@@ -9,7 +9,7 @@
   "routes": [
     {
       "headers": {
-        "Access-Control-Allow-Origin": "https://io.tskoli.dev",
+        "Access-Control-Allow-Origin": "https://tskoli-intranet-website-h7.vercel.app",
         "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept",
         "Access-Control-Allow-Credentials": "true"
