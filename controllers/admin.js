@@ -106,6 +106,7 @@ controller.getForm = async (req, res)=>{
   const resp = await forms.forms.responses.list({formId});
   const form = await forms.forms.get({formId});
   let questionCategory = "none";
+  
   const questions = form.data.items.map((question)=>{
     if(question.textItem) questionCategory=question.title;
     return{
