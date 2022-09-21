@@ -88,6 +88,12 @@ controller.delete = async (req, res) => {
 controller.getForm = async (req, res)=>{
   const formId = req.params._id;
   const auth = new GoogleAuth({
+    credentials:{
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      project_id: process.env.GOOGLE_PROJECT_ID,
+      private_key: process.env.GOOGLE_PRIVATE_KEY      
+    },
     scopes: [
       'https://www.googleapis.com/auth/forms.responses.readonly',
       'https://www.googleapis.com/auth/forms.body.readonly'
