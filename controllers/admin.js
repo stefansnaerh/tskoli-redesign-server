@@ -92,7 +92,7 @@ controller.getForm = async (req, res)=>{
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_email: process.env.GOOGLE_CLIENT_EMAIL,
       project_id: process.env.GOOGLE_PROJECT_ID,
-      private_key: process.env.GOOGLE_PRIVATE_KEY      
+      private_key: process.env.GOOGLE_PRIVATE_KEY
     },
     scopes: [
       'https://www.googleapis.com/auth/forms.responses.readonly',
@@ -106,7 +106,7 @@ controller.getForm = async (req, res)=>{
   const resp = await forms.forms.responses.list({formId});
   const form = await forms.forms.get({formId});
   let questionCategory = "none";
-  
+
   const questions = form.data.items.map((question)=>{
     if(question.textItem) questionCategory=question.title;
     return{

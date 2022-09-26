@@ -25,7 +25,7 @@ const swaggerDefinition = {
       url:'https://tskoli.is/namsbraut/vefthroun/'
     }
   },
-  servers:[{url:"https://localhost:3001"}]
+  servers:[{url:"http://localhost:3001"}]
 }
 const options = {
   swaggerDefinition,
@@ -77,7 +77,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const frontEnds = [
-                    //"https://io.tskoli.dev", 
+                    "https://io.vefskoli.is", 
                     "http://localhost:3002",
                     "https://horsemern.xyz", 
                     "https://tskoli-intranet-website-eight.vercel.app", 
@@ -172,9 +172,9 @@ app.use("/api/v1/gallery", galleryRoutes);
 if (isProd) {
   app.listen(3001);
 } else {
-  const https = require("https");
+  const http = require("http");
   const fs = require("fs");
-  const httpsServer = https.createServer(
+  const httpServer = http.createServer(
     {
       key: fs.readFileSync("./.certificates/localhost-api.key"),
       cert: fs.readFileSync("./.certificates/localhost-api.crt"),
@@ -182,7 +182,7 @@ if (isProd) {
     app
   );
 
-  httpsServer.listen(3001, () => {
-    console.log("HTTPS Server running on port 3001");
+  httpServer.listen(3001, () => {
+    console.log("HTTP Server running on port 3001");
   });
 }
