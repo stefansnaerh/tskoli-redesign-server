@@ -56,7 +56,7 @@ app.use(express.json());
 app.use(bodyParser.json()); // Wei added
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
+console.log(process.env.SESSION_SECRET)
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -68,11 +68,12 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
       sameSite: "none",
-      secure: true,
+      ...(isProd && { secure: true }),
 
     },
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 

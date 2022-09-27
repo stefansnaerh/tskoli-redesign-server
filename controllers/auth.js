@@ -46,6 +46,7 @@ controller.register = async (req, res) => {
 };
 
 controller.login = (req, res, next) => {
+  
   passport.authenticate("local", function (err, user) {
     if (err) {
       return next(err);
@@ -57,9 +58,10 @@ controller.login = (req, res, next) => {
 
     req.login(user, function (err) {
       if (err) {
+        console.log("the error is",err)
         return next(handleLoginErrors(err));
       }
-
+      //console.log(req.user);
       return res.send(resUser(req.user));
     });
   })(req, res, next);
@@ -75,6 +77,7 @@ controller.logout = (req, res) => {
 };
 
 controller.me = (req, res) => {
+  console.log(req.user);
   return res.send(resUser(req.user));
 };
 

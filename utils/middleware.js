@@ -4,17 +4,20 @@ const isAdmin = (req, res, next) => {
   // i.e. acting as another user
   //console.log(req.user);
   if (req.user.isAdmin || req.session.su) {
+    
     return next();
   }
-
   return res.status(401).send({ message: "Not authorized" });
 };
 
 const isAuthenticated = (req, res, next) => {
+  console.log(req.user);
   if (req.isAuthenticated()) {
+    console.log("snugg semy snugg snugg snugg")
     return next();
   }
 
+  console.log("bannað!!!")
   return res.status(401).send({ message: "Not authorized" });
 };
 
