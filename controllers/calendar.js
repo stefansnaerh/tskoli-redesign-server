@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Calendar = require("../model/Calendar");
 
+const controller = {};
+
 controller.getAll = async (req, res) => {
   try {
     const guides = await Calendar.find({})
@@ -12,7 +14,7 @@ controller.getAll = async (req, res) => {
   }
 };
 
-controller.create = async (req, res) => {
+controller.createEvent = async (req, res) => {
   // Create new guide
   try {
     const event = req.body;
@@ -29,3 +31,5 @@ controller.create = async (req, res) => {
       .send({ message: "An error has occurred", error: error });
   }
 }
+
+module.exports = controller;
