@@ -89,6 +89,7 @@ const frontEnds = [
 app.use(
   "*",
   cors((req, callback) => {
+    console.log("the origin is:",req.headers.origin)
     callback(null, {
       origin: isProd
         //? "https://" + process.env.FRONTEND_DOMAIN
