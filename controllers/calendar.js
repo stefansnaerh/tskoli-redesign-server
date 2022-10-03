@@ -17,7 +17,7 @@ controller.getAll = async (req, res) => {
 controller.createEvent = async (req, res) => {
   // Create new guide
   try {
-    const event = req.body;
+    const body = req.body;
     body._id = mongoose.Types.ObjectId();
     body.updatedAt = Date.now();
     const newGuide = await Guides.create( body, (error) => {
