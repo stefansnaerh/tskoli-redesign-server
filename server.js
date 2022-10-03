@@ -169,6 +169,9 @@ app.use("/api/v1/admin", isAdmin, adminRoutes);
 const galleryRoutes = require("./routes/gallery");
 app.use("/api/v1/gallery", galleryRoutes);
 
+const userRoutes = require("./routes/calendar");
+app.use("/api/v1/calendar", userRoutes);
+
 // Run server
 if (isProd) {
   app.listen(3001);
