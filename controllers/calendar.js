@@ -20,7 +20,7 @@ controller.createEvent = async (req, res) => {
     const body = req.body;
     body._id = mongoose.Types.ObjectId();
     body.updatedAt = Date.now();
-    const newGuide = await Guides.create( body, (error) => {
+    await Calendar.create( body, (error) => {
       console.log(error);
     });
 
