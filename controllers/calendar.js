@@ -26,7 +26,7 @@ controller.createEvent = async (req, res) => {
 
     return res.send({ message: "Success", id: body._id });// get new created event's id and send it to the frontend
   } catch (error) {
-    console.log("the error is: ", JSON.stringify(error))
+    console.log("the error is: ", error.message)
     return res
       .status(500)
       .send({ message: "An error has occurred", error: error });
