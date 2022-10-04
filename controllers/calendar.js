@@ -5,8 +5,8 @@ const controller = {};
 
 controller.getAll = async (req, res) => {
   try {
-    const guides = await Calendar.find({})
-    return res.send(guides);
+    const cal = await Calendar.find({})
+    return res.send(cal);
   } catch (error) {
     return res
       .status(500)
@@ -17,7 +17,7 @@ controller.getAll = async (req, res) => {
 controller.createEvent = async (req, res) => {
   // Create new guide
   try {
-    const body = req.body;
+    const body = req.body
     body._id = mongoose.Types.ObjectId();
     body.updatedAt = Date.now();
     await Calendar.create( body, (error) => {
