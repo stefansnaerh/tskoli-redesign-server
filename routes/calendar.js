@@ -7,6 +7,6 @@ router.post("/", controller.createEvent);
 
 router.patch("/:_id", controller.editEvent);
 
-router.delete("/_id", controller.deleteEvent);
+router.delete("/:_id", controller.deleteEvent);
 
 module.exports = router;
