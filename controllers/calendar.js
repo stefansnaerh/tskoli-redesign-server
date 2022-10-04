@@ -33,4 +33,41 @@ controller.createEvent = async (req, res) => {
   }
 }
 
+controller.editEvent = async (req,res)=>{
+  try {
+    const event = await Calendar.replaceOne(
+      {
+        _id: req.params._id,
+      },
+      {
+        ...req.body, // spread syntax
+        updatedAt: Date.now(),
+      }
+    );
+
+    return res.send(event);
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "An error has occurred", error: error });
+  }
+}
+
+controller.deleteEvent = async (req, res) => {
+
+  try {
+
+    const deleteGuide = await Calendar.deleteOne(
+      {
+        _id: req.params._id,
+      },
+    );
+
+    res.status(200).json({ message: 'Deleted this guide' })
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ message: "An error has occurred", error: error });
+  }
+}
 module.exports = controller;
