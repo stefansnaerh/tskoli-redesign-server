@@ -57,7 +57,7 @@ controller.deleteEvent = async (req, res) => {
 
   try {
 
-    const deleteGuide = await Calendar.deleteOne(
+    await Calendar.deleteOne(
       {
         _id: req.params._id,
       },
