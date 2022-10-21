@@ -13,6 +13,10 @@ const calendarSchema = new mongoose.Schema({
         type: Array, //array of objectIds - only registered users can attend the events
     },
 
+    Location: {
+        type: String,
+    },
+
     ChatMessages: {
         type: Array, //array of objectIds - only registered users can attend the events
     },
