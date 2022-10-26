@@ -26,7 +26,7 @@ controller.getAssignments = async (req, res) => {
     const recommendedReviews = reviews.filter(review => review.vote === "recommend")
     //adding recommended rewiews to the returns :
     const recommendedReturns = assignmentReturns.filter( ret => {
-        const reviesFound = recommendedReviews.indexOf( review => ret["_id"].toString() === review.AssignmentReturn.toString()) 
+        const reviewsFound = recommendedReviews.indexOf( review => ret["_id"].toString() === review.AssignmentReturn.toString()) 
         console.log(reviewsFound);
         return reviewsFound != -1;
      })
