@@ -7,12 +7,12 @@ const controller = {};
 
 controller.getAssignments = async (req, res) => {
     // const guides = (await axios.get(`${process.env.CMS_URL}/guides/short`)).data;
-    const guides = await Guides.find({});
+    // const guides = await Guides.find({});
     const assignmentReturns = await AssignmentReturn.find().populate("sender", "name");
     const reviews = await Review.find();
 
     //adding assisignments to the assignmentReturns:
-    const returnsWithGuides = assignmentReturns.map((assignmentReturn) => {
+    /*const returnsWithGuides = assignmentReturns.map((assignmentReturn) => {
         const simplifiedReturn = assignmentReturn.toObject();
 
         const assignment = guides.find(
@@ -21,10 +21,12 @@ controller.getAssignments = async (req, res) => {
         const project = { project: assignment.project, title: assignment.Title };
         simplifiedReturn.assignment = project;
         return simplifiedReturn;
-    });
-
-    //adding rewiews to the returns that have been reviewd:
-    reviews.forEach((rawReview) => { // go through all the reviews
+    });*/
+    //only get recommended reviews to publish
+    const recommendedReviews = reviews.filter(review => review.vote === "recommend")
+    //adding recommended rewiews to the returns :
+    const recommendedReturns = assignmentReturns.filter( ret => (recommendedReviews.indexOf( review => ret["_id"].toString() === reviews.AssignmentReturn.toString()) != -1) )
+    /*recommendedReviews.forEach((rawReview) => { // go through all the recommended reviews
         const review = rawReview.toObject(); // turn each review into object
         const index = returnsWithGuides.findIndex( // index is the particular review, inside assignmentReturns array
             (r) => r["_id"].toString() === review.assignmentReturn.toString()
@@ -40,9 +42,9 @@ controller.getAssignments = async (req, res) => {
             // In case an assignment return was
             // deleted, it won't be found
         }
-    });
+    });*/
 
-    return res.send(returnsWithGuides);
+    return res.send(recommendedReturns);
 };
 
 module.exports = controller;
