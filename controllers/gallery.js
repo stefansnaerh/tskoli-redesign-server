@@ -25,7 +25,11 @@ controller.getAssignments = async (req, res) => {
     //only get recommended reviews to publish
     const recommendedReviews = reviews.filter(review => review.vote === "recommend")
     //adding recommended rewiews to the returns :
-    const recommendedReturns = assignmentReturns.filter( ret => (recommendedReviews.indexOf( review => ret["_id"].toString() === reviews.AssignmentReturn.toString()) != -1) )
+    const recommendedReturns = assignmentReturns.filter( ret => {
+        const revies = recommendedReviews.indexOf( review => ret["_id"].toString() === review.AssignmentReturn.toString()) 
+        console.log(reviews);
+        return revies != -1;
+     })
     /*recommendedReviews.forEach((rawReview) => { // go through all the recommended reviews
         const review = rawReview.toObject(); // turn each review into object
         const index = returnsWithGuides.findIndex( // index is the particular review, inside assignmentReturns array
