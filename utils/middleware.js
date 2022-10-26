@@ -1,3 +1,4 @@
+const cors = require("cors");
 let timeout = 0;
 const isAdmin = (req, res, next) => {
   // Check if user is admin or is using "su",
@@ -57,4 +58,16 @@ const rateLimit = (req, res, next) => {
   return next();
 }
 
-module.exports = { isAdmin, isAuthenticated, isNotAuthenticated, rateLimit };
+const openApi = cors((req, callback) => {
+  console.log("the origin (all allowed) is:",req.headers.origin)
+  callback(null, {
+    origin: "*",
+    allowedHeaders: [
+      "Content-Type",
+    ],
+    credentials: false,
+    methods: "GET",
+  });
+})
+
+module.exports = { isAdmin, isAuthenticated, isNotAuthenticated, rateLimit, openApi };
