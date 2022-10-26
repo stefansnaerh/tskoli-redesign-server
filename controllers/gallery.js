@@ -26,9 +26,9 @@ controller.getAssignments = async (req, res) => {
     const recommendedReviews = reviews.filter(review => review.vote === "recommend")
     //adding recommended rewiews to the returns :
     const recommendedReturns = assignmentReturns.filter( ret => {
-        const revies = recommendedReviews.indexOf( review => ret["_id"].toString() === review.AssignmentReturn.toString()) 
-        console.log(reviews);
-        return revies != -1;
+        const reviesFound = recommendedReviews.indexOf( review => ret["_id"].toString() === review.AssignmentReturn.toString()) 
+        console.log(reviewsFound);
+        return reviewsFound != -1;
      })
     /*recommendedReviews.forEach((rawReview) => { // go through all the recommended reviews
         const review = rawReview.toObject(); // turn each review into object
