@@ -31,7 +31,6 @@ const options = {
   swaggerDefinition,
   apis:['./routes/*.js']
 }
-console.log(__dirname);
 
 const swaggerSpec = swaggerJSDoc(options);
 
@@ -56,7 +55,6 @@ app.use(express.json());
 app.use(bodyParser.json()); // Wei added
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-console.log(process.env.SESSION_SECRET)
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -91,7 +89,7 @@ const frontEnds = [
 app.use(
   "*",
   cors((req, callback) => {
-    console.log("the origin is:",req.headers.origin)
+    //console.log("the origin is:",req.headers.origin)
     callback(null, {
       origin: isProd
         //? "https://" + process.env.FRONTEND_DOMAIN

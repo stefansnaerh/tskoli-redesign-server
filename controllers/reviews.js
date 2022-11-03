@@ -96,8 +96,6 @@ controller.create = async (req, res) => {
     const allReviews = await Review.find({assignment: mongoose.Types.ObjectId(req.body.assignmentId)});
     //get the assignmentReturns specified by the creteria, oldest first
     reviewableReturns = await AssignmentReturn.find(criteria).sort({ createdAt: 1 });
-    console.log(reviewableReturns);
-    console.log("userid:", req.user._id);
     const ammountOfReviews = reviewableReturns.map( ret => {
       //ammountOfReviews is an array that shows how many reviews exists for each reviewableReturn
       return allReviews.filter(review=> review.assignmentReturn.toString() === ret._id.toString()).length
@@ -105,9 +103,7 @@ controller.create = async (req, res) => {
     const fewestReviews = Math.min(...ammountOfReviews);
     // chosenReturn is the first instane (oldest) of return with the lowest ammount of reviews:
     chosenReturn = reviewableReturns.find( (ret,i) => ammountOfReviews[i] === fewestReviews)
-    console.log(ammountOfReviews);
-    console.log(fewestReviews);
-    console.log(chosenReturn);
+ 
     // If all the possibilities are exhausted return 404
     if (!chosenReturn) {
       return res

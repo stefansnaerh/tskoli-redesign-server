@@ -48,14 +48,15 @@ const assignmentReturnSchema = new mongoose.Schema({
   // Which assignment describes this assignmentReturn
   assignment: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Assignment",
+    ref: "Guide",
     required: true,
   },
-  // Whether a return is already picked for reviewing
+  // We are not using this any more take out and test when I have time
   isPicked: {
     type: Boolean,
     default: false,
   },
+
   createdAt: {
     type: Date,
     required: true,

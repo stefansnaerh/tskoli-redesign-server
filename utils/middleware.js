@@ -12,13 +12,9 @@ const isAdmin = (req, res, next) => {
 };
 
 const isAuthenticated = (req, res, next) => {
-  console.log(req.user);
   if (req.isAuthenticated()) {
-    console.log("snugg semy snugg snugg snugg")
     return next();
   }
-
-  console.log("bannað!!!")
   return res.status(401).send({ message: "Not authorized" });
 };
 

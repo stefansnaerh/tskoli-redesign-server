@@ -45,6 +45,7 @@ controller.create = async (req, res) => {
 }
 
 controller.edit = async (req, res) => {
+  console.log(req.body)
   req.body.Description = sanitizeHtml(req.body.Description);
   req.body.Deliver.Description = sanitizeHtml(req.body.Deliver.Description);
 

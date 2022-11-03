@@ -77,7 +77,6 @@ controller.logout = (req, res) => {
 };
 
 controller.me = (req, res) => {
-  console.log(req.user);
   return res.send(resUser(req.user));
 };
 
